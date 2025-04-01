@@ -1,0 +1,49 @@
+<div class="accounts-container">
+  <h1>Quản lý tài khoản</h1>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+  
+  <app-empty-state 
+    *ngIf="!isLoading && dataSource.data.length === 0"
+    icon="people_outline"
+    message="No accounts found">
+  </app-empty-state>
+  
+  <mat-table [dataSource]="dataSource" *ngIf="!isLoading && dataSource.data.length > 0">
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let account">{{ account.email }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell *matHeaderCellDef>Full Name</mat-header-cell>
+      <mat-cell *matCellDef="let account">{{ account.fullName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let account">
+        <button mat-icon-button color="primary" (click)="onEdit(account)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDelete(account)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
+
+<!-- Add confirmation dialog -->
+<app-confirm-dialog
+  [isOpen]="showConfirmDialog"
+  [title]="confirmDialogTitle"
+  [message]="confirmDialogMessage"
+  (confirmEvent)="confirmDeleteAccount()"
+  (closeEvent)="showConfirmDialog = false">
+</app-confirm-dialog>

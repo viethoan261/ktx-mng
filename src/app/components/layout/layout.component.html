@@ -1,0 +1,17 @@
+<app-header></app-header>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav class="sidenav" fixedInViewport
+      [mode]="'side'"
+      [opened]="true"
+      [disableClose]="true"
+      [fixedInViewport]="true">
+    <app-navbar></app-navbar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

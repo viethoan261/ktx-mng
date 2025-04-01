@@ -1,0 +1,31 @@
+<div class="login-container">
+  <div class="login-left">
+    <div class="background-image"></div>
+    <div class="overlay-text">
+      <h1>Chào mừng đến với Hệ thống Quản lý ký túc xá</h1>
+      <p>Quản lý ký túc xá một cách hiệu quả và chuyên nghiệp</p>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-form">
+      <h2>Đăng nhập</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email">
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Mật khẩu</mat-label>
+          <input matInput formControlName="password" type="password">
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+          Đăng nhập
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

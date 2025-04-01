@@ -1,1 +1,161 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use 'styles/theme.scss' as theme;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.mat-icon {
+  margin-right: 8px;
+}
+
+.active {
+  background-color: #e0e0e0;
+}
+
+// Global styles for tables
+.mat-table {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  // Header styling
+  .mat-header-row {
+    background-color: #f5f7f9;
+    border-bottom: 1px solid #e0e0e0;
+    min-height: 56px;
+  }
+  
+  .mat-header-cell {
+    color: #424242;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  // Row styling
+  .mat-row {
+    min-height: 52px;
+    transition: background-color 0.2s ease;
+    
+    &:nth-child(even) {
+      background-color: #fafafa;
+    }
+    
+    &:hover {
+      background-color: #f0f7ff;
+    }
+  }
+  
+  // Cell styling
+  .mat-cell {
+    color: #333;
+    font-size: 14px;
+    padding: 16px;
+    
+    &.mat-column-actions {
+      width: 120px;
+      text-align: center;
+      
+      .mat-icon-button {
+        margin: 0 4px;
+        
+        &.mat-primary {
+          color: #1976d2;
+        }
+        
+        &.mat-warn {
+          color: #f44336;
+        }
+      }
+    }
+  }
+  
+  // Empty state
+  .mat-row.empty-row {
+    display: flex;
+    justify-content: center;
+    padding: 32px 0;
+    
+    .empty-message {
+      color: #757575;
+      font-style: italic;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .mat-table {
+    .mat-header-cell,
+    .mat-cell {
+      padding: 12px 8px;
+      font-size: 13px;
+    }
+  }
+}
+
+// Global styles for Material form fields
+.mat-form-field {
+  width: 100%;
+  
+  ::ng-deep {
+    .mat-form-field-wrapper {
+      margin: 0;
+      padding-bottom: 0;
+    }
+
+    .mat-form-field-outline {
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .mat-form-field-outline-thick {
+      color: #1976d2;
+    }
+
+    .mat-form-field-label {
+      color: #666;
+      font-size: 0.9rem;
+      padding-top: 1rem;
+      transform: translateY(0) scale(1);
+    }
+
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+      border-radius: 8px 0 0 8px;
+    }
+
+    .mat-form-field-outline-end {
+      border-radius: 0 8px 8px 0;
+    }
+
+    input.mat-input-element {
+      padding: 1.25rem 1rem;
+      font-size: 1rem;
+      margin-top: 0.75rem;
+      height: 1.5rem;
+    }
+
+    .mat-form-field-subscript-wrapper {
+      margin-top: 0.75rem;
+      min-height: 1.5rem;
+    }
+
+    .mat-form-field-infix {
+      padding: 0.5rem 0;
+      border-top: none;
+    }
+  }
+}

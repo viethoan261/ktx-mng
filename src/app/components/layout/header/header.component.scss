@@ -1,0 +1,62 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+  height: 30px;
+  margin-right: 16px;
+}
+
+.account-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+
+  mat-icon {
+    margin-right: 4px;
+  }
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  z-index: 9999 !important;
+}
+
+::ng-deep .mat-mdc-menu-content {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0;
+}
+
+::ng-deep .mat-mdc-menu-item {
+  color: #000;
+  height: 48px;
+  line-height: 48px;
+  
+  mat-icon {
+    margin-right: 8px;
+    color: #000;
+  }
+}
+
+.account-menu {
+  background-color: #fff;
+}
+
+.menu-item {
+  color: #000;
+  
+  mat-icon {
+    color: #000;
+  }
+}

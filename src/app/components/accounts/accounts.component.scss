@@ -1,0 +1,47 @@
+@use 'sass:map';
+@use '../../../styles/variables' as *;
+
+.accounts-container {
+  padding: $spacing-lg;
+
+  h1 {
+    margin-bottom: $spacing-lg;
+    color: $text-primary;
+  }
+
+  mat-table {
+    width: 100%;
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-sm;
+
+    .mat-header-cell {
+      font-weight: bold;
+      color: $text-primary;
+    }
+
+    .mat-cell {
+      color: $text-secondary;
+    }
+
+    .mat-row:hover {
+      background-color: $background-hover;
+    }
+  }
+
+  .mat-column-actions {
+    width: 120px;
+    text-align: center;
+  }
+
+  button {
+    margin: 0 $spacing-xs;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+}
