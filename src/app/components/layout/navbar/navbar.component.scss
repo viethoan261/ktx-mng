@@ -6,7 +6,7 @@
 }
 
 mat-nav-list {
-  padding-top: 30px;
+  padding-top: 50px;
 }
 
 a {
@@ -24,5 +24,41 @@ a {
 
   &.active {
     background-color: #e0e0e0;
+  }
+}
+
+// Container để đẩy user profile xuống dưới
+.navbar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; // Quan trọng: container cần chiếm hết chiều cao
+}
+
+mat-nav-list {
+  padding-top: 50px;
+  flex-grow: 1; // Quan trọng: list chiếm hết không gian còn lại
+  overflow-y: auto; // Cho phép cuộn nếu list quá dài
+}
+
+// Style cho phần user profile ở dưới cùng
+.user-profile {
+  display: flex;
+  align-items: center;
+  padding: 16px; // Khoảng cách xung quanh
+  border-top: 1px solid #e0e0e0; // Đường kẻ phân cách
+  gap: 12px; // Khoảng cách giữa avatar và tên
+
+  .user-avatar {
+    font-size: 36px; // Kích thước avatar
+    width: 36px; // Đảm bảo kích thước cố định
+    height: 36px;
+    margin-right: 0; // Ghi đè margin-right mặc định của mat-icon nếu cần
+    // Có thể thêm border-radius: 50% nếu muốn avatar tròn thực sự
+  }
+
+  .user-name {
+    font-weight: 500;
+    color: #333;
+    flex-grow: 1; // Tên chiếm không gian còn lại
   }
 }

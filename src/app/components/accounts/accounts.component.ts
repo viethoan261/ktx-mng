@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Account } from '../../models/account.model';
 import { AccountService } from '../../services/account.service';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
+import { AccountFormDialogComponent } from './account-form-dialog/account-form-dialog.component';
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss']
+  styleUrls: ['./accounts.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AccountsComponent implements OnInit {
   accounts: Account[] = [];
@@ -86,8 +88,23 @@ export class AccountsComponent implements OnInit {
   }
 
   onEdit(account: Account): void {
-    // TODO: Implement edit functionality
-    console.log('Edit account:', account);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '500px';
+    dialogConfig.maxWidth = '90vw';
+    dialogConfig.maxHeight = '90vh';
+    dialogConfig.panelClass = 'custom-dialog';
+    dialogConfig.data = { account };
+
+    const dialogRef = this.dialog.open(AccountFormDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Updating account:', result);
+        // TODO: Implement the actual update logic
+      }
+    });
   }
 
   onDelete(account: Account): void {
@@ -133,5 +150,25 @@ export class AccountsComponent implements OnInit {
       this.loadAccounts();
     });
     */
+  }
+
+  onCreate(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '500px';
+    dialogConfig.maxWidth = '90vw';
+    dialogConfig.maxHeight = '90vh';
+    dialogConfig.panelClass = 'custom-dialog';
+    dialogConfig.data = {};
+
+    const dialogRef = this.dialog.open(AccountFormDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Creating new account:', result);
+        // TODO: Implement the actual creation logic
+      }
+    });
   }
 }

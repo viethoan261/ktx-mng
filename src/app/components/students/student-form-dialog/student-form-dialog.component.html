@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Chỉnh sửa sinh viên' : 'Thêm sinh viên mới' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="studentForm">
+    <!-- Họ và tên -->
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Họ và tên</mat-label>
+        <input matInput formControlName="fullName">
+        <mat-error *ngIf="studentForm.get('fullName')?.hasError('required')">
+          Họ và tên là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Email -->
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="studentForm.get('email')?.hasError('required')">
+          Email là bắt buộc
+        </mat-error>
+        <mat-error *ngIf="studentForm.get('email')?.hasError('email')">
+          Email không hợp lệ
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Mã số sinh viên -->
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Mã số sinh viên</mat-label>
+        <input matInput formControlName="studentId">
+        <mat-error *ngIf="studentForm.get('studentId')?.hasError('required')">
+          Mã số sinh viên là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Phòng ở -->
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Phòng</mat-label>
+        <mat-select formControlName="roomNumber">
+          <mat-option *ngFor="let room of availableRooms" [value]="room">
+            {{ room }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="studentForm.get('roomNumber')?.hasError('required')">
+          Phòng là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Mật khẩu (chỉ khi tạo mới) -->
+    <div class="form-field" *ngIf="!isEditMode">
+      <mat-form-field appearance="outline">
+        <mat-label>Mật khẩu ban đầu</mat-label>
+        <input matInput type="password" formControlName="password">
+        <mat-error *ngIf="studentForm.get('password')?.hasError('required')">
+          Mật khẩu là bắt buộc
+        </mat-error>
+        <mat-error *ngIf="studentForm.get('password')?.hasError('minlength')">
+          Mật khẩu phải có ít nhất 6 ký tự
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Thêm các trường khác nếu cần -->
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Hủy</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!studentForm.valid">
+    {{ isEditMode ? 'Cập nhật' : 'Thêm mới' }}
+  </button>
+</mat-dialog-actions>

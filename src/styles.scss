@@ -117,7 +117,7 @@ html, body {
     }
 
     .mat-form-field-outline {
-      background: #f8f9fa;
+      color: rgba(0, 0, 0, 0.12);
       border-radius: 8px;
     }
 
@@ -158,4 +158,29 @@ html, body {
       border-top: none;
     }
   }
+}
+
+// Custom dialog styles
+.custom-dialog {
+  .mat-mdc-dialog-container {
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .mdc-dialog__surface {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .mdc-dialog__container {
+    height: auto;
+  }
+}
+
+// Legacy material styles support
+.mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
 }

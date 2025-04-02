@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 20px;
+}
+
+.room-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  mat-form-field:first-child {
+    margin-top: 20px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  margin: 0;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+
+  button {
+    min-width: 100px;
+  }
+}

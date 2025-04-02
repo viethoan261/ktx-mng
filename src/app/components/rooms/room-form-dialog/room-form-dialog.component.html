@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Chỉnh sửa phòng' : 'Thêm phòng mới' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="roomForm" class="room-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Số phòng</mat-label>
+      <input matInput formControlName="roomNumber">
+      <mat-error *ngIf="roomForm.get('roomNumber')?.hasError('required')">
+        Số phòng là bắt buộc
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tầng</mat-label>
+      <input matInput type="number" formControlName="floor">
+      <mat-error *ngIf="roomForm.get('floor')?.hasError('required')">
+        Tầng là bắt buộc
+      </mat-error>
+      <mat-error *ngIf="roomForm.get('floor')?.hasError('min')">
+        Tầng phải lớn hơn 0
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Số người tối đa</mat-label>
+      <input matInput type="number" formControlName="maxOccupancy">
+      <mat-error *ngIf="roomForm.get('maxOccupancy')?.hasError('required')">
+        Số người tối đa là bắt buộc
+      </mat-error>
+      <mat-error *ngIf="roomForm.get('maxOccupancy')?.hasError('min')">
+        Số người tối đa phải lớn hơn 0
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tình trạng</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="empty">Trống</mat-option>
+        <mat-option value="occupied">Đã thuê</mat-option>
+        <mat-option value="maintenance">Bảo trì</mat-option>
+      </mat-select>
+      <mat-error *ngIf="roomForm.get('status')?.hasError('required')">
+        Tình trạng là bắt buộc
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width" *ngIf="roomForm.get('status')?.value === 'occupied'">
+      <mat-label>Số người hiện tại</mat-label>
+      <input matInput type="number" formControlName="currentOccupancy">
+      <mat-error *ngIf="roomForm.get('currentOccupancy')?.hasError('min')">
+        Số người hiện tại không được âm
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Mô tả</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Hủy</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!roomForm.valid">
+    {{ isEditMode ? 'Cập nhật' : 'Thêm mới' }}
+  </button>
+</mat-dialog-actions> 

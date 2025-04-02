@@ -1,9 +1,9 @@
-<div class="accounts-container">
+<div class="students-container">
   <div class="header-section">
-    <h1>Quản lý tài khoản</h1>
+    <h1>Quản lý sinh viên</h1>
     <button mat-raised-button color="primary" (click)="onCreate()">
       <mat-icon>add</mat-icon>
-      Tạo tài khoản
+      Thêm sinh viên
     </button>
   </div>
   
@@ -13,28 +13,33 @@
   
   <app-empty-state 
     *ngIf="!isLoading && dataSource.data.length === 0"
-    icon="people_outline"
-    message="No accounts found">
+    icon="school"
+    message="Không tìm thấy sinh viên nào">
   </app-empty-state>
   
   <mat-table [dataSource]="dataSource" *ngIf="!isLoading && dataSource.data.length > 0">
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell *matCellDef="let account">{{ account.email }}</mat-cell>
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell *matHeaderCellDef>Họ và tên</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.fullName }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="fullName">
-      <mat-header-cell *matHeaderCellDef>Full Name</mat-header-cell>
-      <mat-cell *matCellDef="let account">{{ account.fullName }}</mat-cell>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.email }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="roomNumber">
+      <mat-header-cell *matHeaderCellDef>Phòng</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.roomNumber }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-      <mat-cell *matCellDef="let account">
-        <button mat-icon-button color="primary" (click)="onEdit(account)">
+      <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
+      <mat-cell *matCellDef="let student">
+        <button mat-icon-button color="primary" (click)="onEdit(student)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="onDelete(account)">
+        <button mat-icon-button color="warn" (click)="onDelete(student)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-cell>
@@ -45,11 +50,10 @@
   </mat-table>
 </div>
 
-<!-- Add confirmation dialog for delete -->
 <app-confirm-dialog
   [isOpen]="showConfirmDialog"
   [title]="confirmDialogTitle"
   [message]="confirmDialogMessage"
-  (confirmEvent)="confirmDeleteAccount()"
+  (confirmEvent)="confirmDeleteStudent()"
   (closeEvent)="showConfirmDialog = false">
 </app-confirm-dialog>

@@ -25,6 +25,7 @@ mat-toolbar {
 
   mat-icon {
     margin-right: 4px;
+    color: #000;
   }
 }
 
@@ -59,4 +60,12 @@ mat-toolbar {
   mat-icon {
     color: #000;
   }
+}
+
+span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin-left: 10px;
+  margin-right: 10px;
 }

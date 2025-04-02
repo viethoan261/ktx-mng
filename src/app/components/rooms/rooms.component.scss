@@ -1,0 +1,87 @@
+@use '../../../styles/variables' as *;
+
+.rooms-container {
+  padding: $spacing-md;
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-md;
+    
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+      color: $text-primary;
+    }
+    
+    button {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+    }
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    padding: $spacing-md;
+  }
+  
+  mat-table {
+    width: 100%;
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-sm;
+    
+    .mat-header-row {
+      // Không cần background riêng nếu dùng mat-header-cell
+    }
+    
+    .mat-header-cell {
+      font-weight: bold;
+      color: $text-primary;
+      background: #f5f5f5;
+    }
+
+    .mat-cell {
+      color: $text-secondary;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: rgba(0,0,0,.12);
+    }
+
+    .mat-row {
+      &:hover {
+        background: $background-hover;
+      }
+    }
+
+    .mat-column-actions {
+      width: 120px;
+      text-align: center;
+      
+      button {
+        margin: 0 $spacing-xs;
+      }
+    }
+    
+    .status-occupied {
+      color: $danger-color;
+      font-weight: 500;
+    }
+    
+    .status-empty {
+      color: $success-color;
+      font-weight: 500;
+    }
+    
+    .status-maintenance {
+      color: $warning-color;
+      font-weight: 500;
+    }
+  }
+} 

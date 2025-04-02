@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Chỉnh sửa tài khoản' : 'Tạo tài khoản mới' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="accountForm">
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Họ và tên</mat-label>
+        <input matInput formControlName="fullName">
+        <mat-error *ngIf="accountForm.get('fullName')?.hasError('required')">
+          Họ và tên là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="accountForm.get('email')?.hasError('required')">
+          Email là bắt buộc
+        </mat-error>
+        <mat-error *ngIf="accountForm.get('email')?.hasError('email')">
+          Email không hợp lệ
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Vai trò</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="student">Sinh viên</mat-option>
+          <mat-option value="admin">Quản trị viên</mat-option>
+        </mat-select>
+        <mat-error *ngIf="accountForm.get('role')?.hasError('required')">
+          Vai trò là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field" *ngIf="!isEditMode">
+      <mat-form-field appearance="outline">
+        <mat-label>Mật khẩu</mat-label>
+        <input matInput type="password" formControlName="password">
+        <mat-error *ngIf="accountForm.get('password')?.hasError('required')">
+          Mật khẩu là bắt buộc
+        </mat-error>
+        <mat-error *ngIf="accountForm.get('password')?.hasError('minlength')">
+          Mật khẩu phải có ít nhất 6 ký tự
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Hủy</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!accountForm.valid">
+    {{ isEditMode ? 'Cập nhật' : 'Tạo mới' }}
+  </button>
+</mat-dialog-actions> 

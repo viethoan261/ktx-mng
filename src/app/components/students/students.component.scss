@@ -1,7 +1,8 @@
 @use 'sass:map';
 @use '../../../styles/variables' as *;
 
-.accounts-container {
+// Chỉ cần đổi tên class container thành .students-container
+.students-container {
   padding: 20px;
 
   h1 {
@@ -35,7 +36,8 @@
   }
 
   button {
-    margin: 0 $spacing-xs;
+    // Style cho nút trong header sẽ được xử lý bởi .header-section
+    // Chỉ cần style cho nút icon trong bảng nếu cần
   }
   
   .loading-spinner {
@@ -51,4 +53,9 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+
+  // Style cho nút trong header
+  button {
+    margin: 0; // Reset margin nếu có
+  }
 }
