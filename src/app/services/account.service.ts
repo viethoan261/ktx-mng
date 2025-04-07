@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AccountService {
-  private apiUrl = `${environment.apiUrl}/accounts`;
+  private apiUrl = `${environment.apiUrl}/Users`;
 
   constructor(private http: HttpClient) { }
 
@@ -22,5 +22,9 @@ export class AccountService {
 
   updateAccount(id: number, account: Partial<Account>): Observable<Account> {
     return this.http.put<Account>(`${this.apiUrl}/${id}`, account);
+  }
+
+  createAccount(account: Partial<Account>): Observable<Account> {
+    return this.http.post<Account>(`${this.apiUrl}`, account);
   }
 }

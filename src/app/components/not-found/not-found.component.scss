@@ -1,0 +1,27 @@
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 64px); /* Chiều cao trừ đi chiều cao navbar (điều chỉnh nếu cần) */
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #f44336; /* Màu đỏ hoặc màu thương hiệu */
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+p {
+  color: #666;
+  margin-bottom: 2rem;
+} 

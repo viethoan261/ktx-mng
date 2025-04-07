@@ -5,8 +5,8 @@
     <div class="form-field">
       <mat-form-field appearance="outline">
         <mat-label>Họ và tên</mat-label>
-        <input matInput formControlName="fullName">
-        <mat-error *ngIf="accountForm.get('fullName')?.hasError('required')">
+        <input matInput formControlName="fullname">
+        <mat-error *ngIf="accountForm.get('fullname')?.hasError('required')">
           Họ và tên là bắt buộc
         </mat-error>
       </mat-form-field>
@@ -27,13 +27,13 @@
 
     <div class="form-field">
       <mat-form-field appearance="outline">
-        <mat-label>Vai trò</mat-label>
-        <mat-select formControlName="role">
-          <mat-option value="student">Sinh viên</mat-option>
-          <mat-option value="admin">Quản trị viên</mat-option>
-        </mat-select>
-        <mat-error *ngIf="accountForm.get('role')?.hasError('required')">
-          Vai trò là bắt buộc
+        <mat-label>Tên đăng nhập</mat-label>
+        <input matInput formControlName="username" [readonly]="isEditMode">
+        <mat-error *ngIf="accountForm.get('username')?.hasError('required')">
+          Tên đăng nhập là bắt buộc
+        </mat-error>
+        <mat-error *ngIf="accountForm.get('username')?.hasError('username')">
+          Tên đăng nhập không hợp lệ
         </mat-error>
       </mat-form-field>
     </div>
@@ -50,12 +50,32 @@
         </mat-error>
       </mat-form-field>
     </div>
-  </form>
-</mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Hủy</button>
-  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!accountForm.valid">
-    {{ isEditMode ? 'Cập nhật' : 'Tạo mới' }}
-  </button>
-</mat-dialog-actions> 
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Vai trò</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="STUDENT">Sinh viên</mat-option>
+          <mat-option value="ADMIN">Quản trị viên</mat-option>
+        </mat-select>
+        <mat-error *ngIf="accountForm.get('role')?.hasError('required')">
+          Vai trò là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput formControlName="phone">
+      </mat-form-field>
+    </div>
+  </form>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Hủy</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!accountForm.valid">
+      {{ isEditMode ? 'Cập nhật' : 'Tạo mới' }}
+    </button>
+  </mat-dialog-actions>
+</mat-dialog-content> 

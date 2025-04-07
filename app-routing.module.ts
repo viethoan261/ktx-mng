@@ -5,7 +5,6 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsComponent } from './components/students/students.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
@@ -16,26 +15,29 @@ const routes: Routes = [
   { 
     path: 'login', 
     component: LoginComponent,
-    canActivate: [loginGuard] // Sử dụng functional guard
+    canActivate: [loginGuard]
   },
   { 
     path: '', 
     component: LayoutComponent,
-    canActivate: [authGuard], // Sử dụng functional guard
+    canActivate: [authGuard],
     children: [
-      { path: 'dashboard', component: AccountsComponent }, // Tạm thời dùng AccountsComponent làm dashboard
-      { path: 'accounts', component: AccountsComponent, canActivate: [adminGuard] },
+      { path: 'dashboard', component: AccountsComponent },
+      { 
+        path: 'accounts', 
+        component: AccountsComponent,
+        canActivate: [adminGuard] // Thêm adminGuard cho route accounts
+      },
       { path: 'rooms', component: RoomsComponent },
       { path: 'students', component: StudentsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-  // Wildcard route - mọi route không khớp sẽ chuyển về login
-  { path: '**', component: NotFoundComponent }
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { } 

@@ -4,6 +4,61 @@
 .accounts-container {
   padding: 20px;
 
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .filter-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .table-container {
+    position: relative;
+    min-height: 200px;
+    overflow: auto;
+
+    &.loading {
+      opacity: 0.6;
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .mat-column-actions {
+    width: 120px;
+    text-align: right;
+  }
+
+  .role-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    
+    &.admin-role {
+      background-color: #ffab91;
+      color: #d84315;
+    }
+    
+    &.student-role {
+      background-color: #90caf9;
+      color: #0d47a1;
+    }
+  }
+
+  /* Make table full width */
+  table {
+    width: 100%;
+  }
+
   h1 {
     margin: 0;
     color: $text-primary;
@@ -27,11 +82,6 @@
     .mat-row:hover {
       background-color: $background-hover;
     }
-  }
-
-  .mat-column-actions {
-    width: 120px;
-    text-align: center;
   }
 
   button {

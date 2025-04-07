@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 
 @NgModule({
@@ -11,7 +12,8 @@ import { ConfirmDialogComponent } from './confirm-dialog.component';
   imports: [
     CommonModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   exports: [
     ConfirmDialogComponent

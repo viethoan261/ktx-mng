@@ -11,9 +11,9 @@
       <h2>Đăng nhập</h2>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-icon matSuffix>email</mat-icon>
+          <mat-label>Tên đăng nhập</mat-label>
+          <input matInput formControlName="username" type="text">
+          <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
         
         <mat-form-field appearance="outline">
@@ -21,6 +21,11 @@
           <input matInput formControlName="password" type="password">
           <mat-icon matSuffix>lock</mat-icon>
         </mat-form-field>
+
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <div class="error-message" *ngIf="loginError">
+          {{ loginError }}
+        </div>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
           Đăng nhập

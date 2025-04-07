@@ -44,21 +44,41 @@ mat-nav-list {
 .user-profile {
   display: flex;
   align-items: center;
-  padding: 16px; // Khoảng cách xung quanh
-  border-top: 1px solid #e0e0e0; // Đường kẻ phân cách
-  gap: 12px; // Khoảng cách giữa avatar và tên
+  padding: 16px 12px; // Giảm padding ngang một chút để có thêm không gian cho nút logout
+  border-top: 1px solid #e0e0e0;
+  gap: 8px; // Giảm gap để mọi thứ gần nhau hơn
 
   .user-avatar {
-    font-size: 36px; // Kích thước avatar
-    width: 36px; // Đảm bảo kích thước cố định
+    font-size: 36px;
+    width: 36px;
     height: 36px;
-    margin-right: 0; // Ghi đè margin-right mặc định của mat-icon nếu cần
-    // Có thể thêm border-radius: 50% nếu muốn avatar tròn thực sự
+    margin-right: 0;
   }
 
   .user-name {
     font-weight: 500;
     color: #333;
-    flex-grow: 1; // Tên chiếm không gian còn lại
+    flex-grow: 1;
+    white-space: nowrap; // Tránh tên xuống dòng
+    overflow: hidden; // Ẩn phần tràn ra
+    text-overflow: ellipsis; // Hiển thị dấu ... nếu tràn
+  }
+
+  .logout-button {
+    color: #666;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    
+    &:hover {
+      color: #f44336; // Màu đỏ khi hover
+    }
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+    }
   }
 }

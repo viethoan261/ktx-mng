@@ -1,30 +1,33 @@
 <div class="navbar-container">
   <mat-nav-list>
-    <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+    <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>dashboard</mat-icon>
       <span matListItemTitle>Dashboard</span>
     </a>
-    <a *ngIf="userRole === 'ADMIN'" mat-list-item routerLink="/accounts" routerLinkActive="active">
+    
+    <!-- Chỉ hiển thị mục Quản lý tài khoản khi có role ADMIN -->
+    <a *ngIf="userRole === 'ADMIN'" mat-list-item routerLink="/accounts" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>manage_accounts</mat-icon>
       <span matListItemTitle>Quản lý tài khoản</span>
     </a>
-    <a mat-list-item routerLink="/students" routerLinkActive="active">
+    
+    <a mat-list-item routerLink="/students" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>school</mat-icon>
       <span matListItemTitle>Quản lý sinh viên</span>
     </a>
-    <a mat-list-item routerLink="/rooms" routerLinkActive="active">
+    <a mat-list-item routerLink="/rooms" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>apartment</mat-icon>
       <span matListItemTitle>Quản lý phòng</span>
     </a>
-    <a mat-list-item routerLink="/contracts" routerLinkActive="active">
+    <a mat-list-item routerLink="/contracts" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>description</mat-icon>
       <span matListItemTitle>Hợp đồng</span>
     </a>
-    <a mat-list-item routerLink="/payments" routerLinkActive="active">
+    <a mat-list-item routerLink="/payments" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>payment</mat-icon>
       <span matListItemTitle>Thanh toán</span>
     </a>
-    <a mat-list-item routerLink="/reports" routerLinkActive="active">
+    <a mat-list-item routerLink="/reports" routerLinkActive="active" [disableRipple]="true">
       <mat-icon matListItemIcon>assessment</mat-icon>
       <span matListItemTitle>Báo cáo</span>
     </a>
@@ -34,4 +37,4 @@
     <mat-icon class="user-avatar">account_circle</mat-icon>
     <span class="user-name">{{ userFullName }}</span>
   </div>
-</div>
+</div> 

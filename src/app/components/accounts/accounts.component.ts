@@ -1,6 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { Account } from '../../models/account.model';
 import { AccountService } from '../../services/account.service';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
@@ -10,165 +16,127 @@ import { AccountFormDialogComponent } from './account-form-dialog/account-form-d
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
-export class AccountsComponent implements OnInit {
-  accounts: Account[] = [];
+export class AccountsComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: MatTableDataSource<Account>;
-  displayedColumns: string[] = ['email', 'fullName', 'actions'];
+  displayedColumns: string[] = ['fullname', 'email', 'phone', 'role', 'actions'];
   isLoading = true;
+  private destroy$ = new Subject<void>();
 
-  // Mock data
-  mockAccounts: Account[] = [
-    {
-      id: 1,
-      email: 'admin@example.com',
-      fullName: 'Admin User',
-      role: 'admin',
-      status: 'active',
-      createdAt: new Date('2023-01-01'),
-      updatedAt: new Date('2023-01-10')
-    },
-    {
-      id: 2,
-      email: 'manager@example.com',
-      fullName: 'Manager User',
-      role: 'manager',
-      status: 'active',
-      createdAt: new Date('2023-02-15'),
-      updatedAt: new Date('2023-02-20')
-    },
-    {
-      id: 3,
-      email: 'user@example.com',
-      fullName: 'Regular User',
-      role: 'user',
-      status: 'active',
-      createdAt: new Date('2023-03-10'),
-      updatedAt: new Date('2023-03-15')
-    }
-  ];
-
-  // For standalone dialog
-  showConfirmDialog = false;
-  confirmDialogTitle = '';
-  confirmDialogMessage = '';
-  accountToDelete: Account | null = null;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private accountService: AccountService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
-    this.dataSource = new MatTableDataSource<Account>();
+    this.dataSource = new MatTableDataSource<Account>([]);
   }
 
   ngOnInit(): void {
-    // Uncomment this when using real API
-    // this.loadAccounts();
-    
-    // For mock data
-    this.isLoading = false;
-    this.accounts = this.mockAccounts;
-    this.dataSource.data = this.mockAccounts;
+    this.loadAccounts();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadAccounts(): void {
     this.isLoading = true;
-    this.accountService.getAccounts().subscribe(
-      accounts => {
-        this.isLoading = false;
-        this.accounts = accounts;
-        this.dataSource.data = accounts;
-      },
-      error => {
-        this.isLoading = false;
-        console.error('Error loading accounts', error);
-      }
-    );
+    this.accountService.getAccounts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (accounts) => {
+          this.dataSource.data = accounts;
+          if (this.paginator) this.dataSource.paginator = this.paginator;
+          if (this.sort) this.dataSource.sort = this.sort;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error loading accounts', error);
+          this.snackBar.open('Lỗi tải danh sách tài khoản!', 'Đóng', { duration: 3000 });
+          this.dataSource.data = [];
+        }
+      });
   }
 
-  onEdit(account: Account): void {
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  openAccountDialog(account?: Account): void {
+    const isEditMode = !!account;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '500px';
     dialogConfig.maxWidth = '90vw';
-    dialogConfig.maxHeight = '90vh';
-    dialogConfig.panelClass = 'custom-dialog';
+    dialogConfig.panelClass = 'account-form-dialog';
     dialogConfig.data = { account };
 
     const dialogRef = this.dialog.open(AccountFormDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Updating account:', result);
-        // TODO: Implement the actual update logic
-      }
-    });
-  }
-
-  onDelete(account: Account): void {
-    // Method 1: Using standalone component
-    this.accountToDelete = account;
-    this.confirmDialogTitle = 'Xác nhận xóa';
-    this.confirmDialogMessage = `Bạn có chắc chắn muốn xóa tài khoản ${account.email}?`;
-    this.showConfirmDialog = true;
-
-    // Method 2: Using MatDialog (commented out but kept for reference)
-    /*
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Delete Account',
-        message: `Are you sure you want to delete account ${account.email}?`
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.deleteAccount(account);
-      }
-    });
-    */
-  }
-
-  confirmDeleteAccount(): void {
-    if (this.accountToDelete) {
-      this.deleteAccount(this.accountToDelete);
-      this.showConfirmDialog = false;
-      this.accountToDelete = null;
-    }
-  }
-
-  private deleteAccount(account: Account): void {
-    // For mock data, just remove from the array
-    this.accounts = this.accounts.filter(a => a.id !== account.id);
-    this.dataSource.data = this.accounts;
-    
-    // Uncomment when using real API
-    /*
-    this.accountService.deleteAccount(account.id).subscribe(() => {
-      this.loadAccounts();
-    });
-    */
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) {
+          this.snackBar.open(`Tài khoản đã được ${isEditMode ? 'cập nhật' : 'tạo mới'}!`, 'Đóng', { duration: 3000 });
+          this.loadAccounts();
+        }
+      });
   }
 
   onCreate(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '500px';
-    dialogConfig.maxWidth = '90vw';
-    dialogConfig.maxHeight = '90vh';
-    dialogConfig.panelClass = 'custom-dialog';
-    dialogConfig.data = {};
+    this.openAccountDialog();
+  }
 
-    const dialogRef = this.dialog.open(AccountFormDialogComponent, dialogConfig);
+  onEdit(account: Account): void {
+    this.openAccountDialog(account);
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Creating new account:', result);
-        // TODO: Implement the actual creation logic
+  onDelete(account: Account): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Xác nhận xóa tài khoản',
+        message: `Bạn có chắc chắn muốn xóa tài khoản "${account.username}" (${account.fullname}) không? Hành động này không thể hoàn tác.`
       }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.deleteAccount(account.id);
+      }
+    });
+  }
+
+  private deleteAccount(accountId: number): void {
+    this.isLoading = true;
+    this.accountService.deleteAccount(accountId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Xóa tài khoản thành công!', 'Đóng', { duration: 3000 });
+          this.loadAccounts();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error deleting account', error);
+          this.snackBar.open('Lỗi xóa tài khoản!', 'Đóng', { duration: 3000 });
+        }
+      });
   }
 }

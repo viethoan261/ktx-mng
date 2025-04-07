@@ -1,9 +1,11 @@
 export interface Account {
   id: number;
-  email: string;
-  fullName: string;
+  username: string;
+  fullname: string;
   role: string;
-  status: 'active' | 'inactive';
-  createdAt: Date;
-  updatedAt: Date;
+  email: string;
+  phone: string;
+  password?: string;
+  createdDate?: string | Date;
+  modifiedDate?: string | Date;
 } 
