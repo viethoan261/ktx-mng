@@ -5,12 +5,12 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsComponent } from './components/students/students.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { adminGuard } from './guards/admin.guard';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   { 
