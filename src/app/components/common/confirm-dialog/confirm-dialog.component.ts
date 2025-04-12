@@ -1,4 +1,4 @@
-import { Component, Inject, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Inject, EventEmitter, Input, Output, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -15,9 +15,9 @@ export class ConfirmDialogComponent {
   @Output() closeEvent = new EventEmitter<void>();
   
   constructor(
-    // Thêm optional để hỗ trợ cả 2 chế độ standalone và dialog
-    @Inject(MAT_DIALOG_DATA) public data: any = null,
-    public dialogRef: MatDialogRef<ConfirmDialogComponent> = null as any
+    // Thêm @Optional() để đảm bảo component vẫn hoạt động khi không được inject qua dialog
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any = null,
+    @Optional() public dialogRef: MatDialogRef<ConfirmDialogComponent> = null as any
   ) {
     // Nếu sử dụng MatDialog, lấy title và message từ data
     if (this.data) {

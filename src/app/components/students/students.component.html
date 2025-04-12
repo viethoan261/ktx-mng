@@ -18,19 +18,24 @@
   </app-empty-state>
   
   <mat-table [dataSource]="dataSource" *ngIf="!isLoading && dataSource.data.length > 0">
-    <ng-container matColumnDef="fullName">
+    <ng-container matColumnDef="fullname">
       <mat-header-cell *matHeaderCellDef>Họ và tên</mat-header-cell>
-      <mat-cell *matCellDef="let student">{{ student.fullName }}</mat-cell>
+      <mat-cell *matCellDef="let student">{{ student.fullname }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
       <mat-cell *matCellDef="let student">{{ student.email }}</mat-cell>
     </ng-container>
+    
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef>Số điện thoại</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.phone }}</mat-cell>
+    </ng-container>
 
     <ng-container matColumnDef="roomNumber">
       <mat-header-cell *matHeaderCellDef>Phòng</mat-header-cell>
-      <mat-cell *matCellDef="let student">{{ student.roomNumber }}</mat-cell>
+      <mat-cell *matCellDef="let student">{{ student.roomNumber || 'Chưa có phòng' }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -49,11 +54,3 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </div>
-
-<app-confirm-dialog
-  [isOpen]="showConfirmDialog"
-  [title]="confirmDialogTitle"
-  [message]="confirmDialogMessage"
-  (confirmEvent)="confirmDeleteStudent()"
-  (closeEvent)="showConfirmDialog = false">
-</app-confirm-dialog>

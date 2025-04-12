@@ -1,77 +1,103 @@
 <div class="rooms-container">
-  <div class="header-section">
-    <h1>Quản lý phòng</h1>
+  <div class="header">
+    <h1 class="mat-h1">Quản lý phòng</h1>
     <button mat-raised-button color="primary" (click)="onCreate()">
       <mat-icon>add</mat-icon>
       Thêm phòng
     </button>
   </div>
   
-  <div *ngIf="isLoading" class="loading-spinner">
+  <!-- Filter field -->
+  <mat-form-field class="filter-field">
+    <mat-label>Tìm kiếm</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Nhập từ khóa">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="isLoading">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
   
-  <app-empty-state 
-    *ngIf="!isLoading && dataSource.data.length === 0"
-    icon="meeting_room"
-    message="No rooms found">
-  </app-empty-state>
-  
-  <mat-table [dataSource]="dataSource" *ngIf="!isLoading && dataSource.data.length > 0">
-    <ng-container matColumnDef="roomNumber">
-      <mat-header-cell *matHeaderCellDef>Số phòng</mat-header-cell>
-      <mat-cell *matCellDef="let room">{{ room.roomNumber }}</mat-cell>
-    </ng-container>
+  <!-- Table container -->
+  <div class="table-container" [class.loading]="isLoading">
+    <table mat-table [dataSource]="dataSource" matSort *ngIf="!isLoading && dataSource.data.length > 0">
+      <!-- Room Number Column -->
+      <ng-container matColumnDef="roomNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Số phòng</th>
+        <td mat-cell *matCellDef="let room">{{ room.roomNumber }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="floor">
-      <mat-header-cell *matHeaderCellDef>Tầng</mat-header-cell>
-      <mat-cell *matCellDef="let room">{{ room.floor }}</mat-cell>
-    </ng-container>
+      <!-- Floor Number Column -->
+      <ng-container matColumnDef="floorNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tầng</th>
+        <td mat-cell *matCellDef="let room">{{ room.floorNumber }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="maxOccupancy">
-      <mat-header-cell *matHeaderCellDef>Số người tối đa</mat-header-cell>
-      <mat-cell *matCellDef="let room">{{ room.maxOccupancy }}</mat-cell>
-    </ng-container>
+      <!-- Max Occupancy Column -->
+      <ng-container matColumnDef="maxOccupancy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Số người tối đa</th>
+        <td mat-cell *matCellDef="let room">{{ room.maxOccupancy }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>Tình trạng</mat-header-cell>
-      <mat-cell *matCellDef="let room">
-        <span [ngClass]="{
-          'status-occupied': room.status === 'occupied',
-          'status-empty': room.status === 'empty',
-          'status-maintenance': room.status === 'maintenance'
-        }">
-          {{ getStatusText(room.status) }}
-          <span *ngIf="room.status === 'occupied'">({{ room.currentOccupancy }}/{{ room.maxOccupancy }})</span>
-        </span>
-      </mat-cell>
-    </ng-container>
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tình trạng</th>
+        <td mat-cell *matCellDef="let room">
+          <span class="status-badge" 
+                [class.status-occupied]="room.status === 'OCCUPIED'"
+                [class.status-empty]="room.status === 'EMPTY'"
+                [class.status-maintenance]="room.status === 'MAINTENANCE'">
+            {{ getStatusText(room.status) }}
+            <span *ngIf="room.status === 'OCCUPIED'">({{ room.currentOccupancy }}/{{ room.maxOccupancy }})</span>
+          </span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="currentOccupancy">
-      <mat-header-cell *matHeaderCellDef>Số người hiện tại</mat-header-cell>
-      <mat-cell *matCellDef="let room">
-        {{ room.currentOccupancy || 0 }}/{{ room.maxOccupancy }}
-      </mat-cell>
-    </ng-container>
+      <!-- Current Occupancy Column -->
+      <ng-container matColumnDef="currentOccupancy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Số người hiện tại</th>
+        <td mat-cell *matCellDef="let room">
+          {{ room.currentOccupancy || 0 }}/{{ room.maxOccupancy }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Thao tác</mat-header-cell>
-      <mat-cell *matCellDef="let room">
-        <button mat-icon-button color="primary" (click)="onEdit(room)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="onDelete(room)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Thao tác</th>
+        <td mat-cell *matCellDef="let room">
+          <button mat-icon-button color="primary" (click)="onEdit(room)" matTooltip="Chỉnh sửa">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(room)" matTooltip="Xóa">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+      <!-- Row setup -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- No data row -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="6">Không tìm thấy dữ liệu</td>
+      </tr>
+    </table>
+
+    <app-empty-state 
+      *ngIf="!isLoading && dataSource.data.length === 0"
+      icon="meeting_room"
+      message="Không tìm thấy phòng nào">
+    </app-empty-state>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Chọn trang"></mat-paginator>
+  </div>
 </div>
 
-<!-- Add confirmation dialog for delete -->
+<!-- Remove the standalone confirm dialog -->
+<!-- 
 <app-confirm-dialog
   [isOpen]="showConfirmDialog"
   [title]="confirmDialogTitle"
@@ -79,3 +105,4 @@
   (confirmEvent)="confirmDeleteRoom()"
   (closeEvent)="showConfirmDialog = false">
 </app-confirm-dialog> 
+--> 

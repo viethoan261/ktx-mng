@@ -1,13 +1,28 @@
 <h2 mat-dialog-title>{{ isEditMode ? 'Chỉnh sửa sinh viên' : 'Thêm sinh viên mới' }}</h2>
 
-<mat-dialog-content>
+<div *ngIf="isLoading" class="loading-spinner">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
+<mat-dialog-content *ngIf="!isLoading">
   <form [formGroup]="studentForm">
+    <!-- Username (chỉ khi tạo mới) -->
+    <div class="form-field" *ngIf="!isEditMode">
+      <mat-form-field appearance="outline">
+        <mat-label>Tên đăng nhập</mat-label>
+        <input matInput formControlName="username">
+        <mat-error *ngIf="studentForm.get('username')?.hasError('required')">
+          Tên đăng nhập là bắt buộc
+        </mat-error>
+      </mat-form-field>
+    </div>
+
     <!-- Họ và tên -->
     <div class="form-field">
       <mat-form-field appearance="outline">
         <mat-label>Họ và tên</mat-label>
-        <input matInput formControlName="fullName">
-        <mat-error *ngIf="studentForm.get('fullName')?.hasError('required')">
+        <input matInput formControlName="fullname">
+        <mat-error *ngIf="studentForm.get('fullname')?.hasError('required')">
           Họ và tên là bắt buộc
         </mat-error>
       </mat-form-field>
@@ -27,28 +42,13 @@
       </mat-form-field>
     </div>
 
-    <!-- Mã số sinh viên -->
+    <!-- Số điện thoại -->
     <div class="form-field">
       <mat-form-field appearance="outline">
-        <mat-label>Mã số sinh viên</mat-label>
-        <input matInput formControlName="studentId">
-        <mat-error *ngIf="studentForm.get('studentId')?.hasError('required')">
-          Mã số sinh viên là bắt buộc
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <!-- Phòng ở -->
-    <div class="form-field">
-      <mat-form-field appearance="outline">
-        <mat-label>Phòng</mat-label>
-        <mat-select formControlName="roomNumber">
-          <mat-option *ngFor="let room of availableRooms" [value]="room">
-            {{ room }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="studentForm.get('roomNumber')?.hasError('required')">
-          Phòng là bắt buộc
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput formControlName="phone">
+        <mat-error *ngIf="studentForm.get('phone')?.hasError('required')">
+          Số điện thoại là bắt buộc
         </mat-error>
       </mat-form-field>
     </div>
@@ -56,7 +56,7 @@
     <!-- Mật khẩu (chỉ khi tạo mới) -->
     <div class="form-field" *ngIf="!isEditMode">
       <mat-form-field appearance="outline">
-        <mat-label>Mật khẩu ban đầu</mat-label>
+        <mat-label>Mật khẩu</mat-label>
         <input matInput type="password" formControlName="password">
         <mat-error *ngIf="studentForm.get('password')?.hasError('required')">
           Mật khẩu là bắt buộc
@@ -66,8 +66,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-
-    <!-- Thêm các trường khác nếu cần -->
 
   </form>
 </mat-dialog-content>

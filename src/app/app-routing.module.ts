@@ -25,7 +25,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: AccountsComponent }, // Tạm thời dùng AccountsComponent làm dashboard
       { path: 'accounts', component: AccountsComponent, canActivate: [adminGuard] },
-      { path: 'rooms', component: RoomsComponent },
+      { path: 'rooms', component: RoomsComponent, canActivate: [adminGuard] },
       { path: 'students', component: StudentsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

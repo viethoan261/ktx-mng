@@ -1,11 +1,30 @@
 export interface Room {
-  id: number;
+  id: string;
   roomNumber: string;
-  floor: number;
+  floorNumber: string;
   maxOccupancy: number;
-  status: 'occupied' | 'empty' | 'maintenance';
+  status: 'OCCUPIED' | 'EMPTY' | 'MAINTENANCE';
   currentOccupancy?: number;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  studentIds?: string[];
+  students?: any[];
+  createdDate?: string;
+  modifiedDate?: string;
+}
+
+export interface RoomCreateDto {
+  roomNumber: string;
+  floorNumber: string;
+  maxOccupancy: number;
+  status: string;
+  currentOccupancy: number;
+  studentIds: string[];
+}
+
+export interface RoomUpdateDto {
+  roomNumber: string;
+  floorNumber: string;
+  maxOccupancy: number;
+  status: string;
+  currentOccupancy: number;
+  studentIds: string[];
 } 

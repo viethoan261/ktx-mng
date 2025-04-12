@@ -1,148 +1,173 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Student } from '../../models/student.model'; // Import từ file model
-// import { StudentService } from '../../services/student.service'; // Tạm thời comment, cần tạo service này
-// import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component'; // Sẽ dùng khi có logic xóa
-import { StudentFormDialogComponent } from './student-form-dialog/student-form-dialog.component'; // Bỏ comment import này
+import { Student } from '../../models/student.model';
+import { StudentService } from '../../services/student.service';
+import { StudentFormDialogComponent } from './student-form-dialog/student-form-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject, takeUntil } from 'rxjs';
+import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.scss']
 })
-export class StudentsComponent implements OnInit {
+export class StudentsComponent implements OnInit, OnDestroy {
   students: Student[] = [];
   dataSource: MatTableDataSource<Student>;
-  displayedColumns: string[] = ['fullName', 'email', 'roomNumber', 'actions'];
-  isLoading = false; // Bắt đầu với false để hiển thị dữ liệu mock ngay
-
-  // Mock data
-  mockStudents: Student[] = [
-    {
-      id: 1,
-      fullName: 'Nguyễn Văn A',
-      email: 'vana@example.com',
-      roomNumber: '101'
-    },
-    {
-      id: 2,
-      fullName: 'Trần Thị B',
-      email: 'thib@example.com',
-      roomNumber: '102'
-    },
-    {
-      id: 3,
-      fullName: 'Lê Văn C',
-      email: 'vanc@example.com',
-      roomNumber: '201'
-    }
-  ];
-
-  // Biến cho confirm dialog (tương tự accounts)
+  displayedColumns: string[] = ['fullname', 'email', 'phone', 'roomNumber', 'actions'];
+  isLoading = false;
+  private destroy$ = new Subject<void>();
+  
+  // Properties for confirm dialog
   showConfirmDialog = false;
   confirmDialogTitle = '';
   confirmDialogMessage = '';
   studentToDelete: Student | null = null;
 
   constructor(
-    // private studentService: StudentService, // Uncomment khi có service
-    private dialog: MatDialog
+    private studentService: StudentService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     this.dataSource = new MatTableDataSource<Student>();
   }
 
   ngOnInit(): void {
-    // For mock data
-    this.isLoading = false;
-    this.students = this.mockStudents;
-    this.dataSource.data = this.mockStudents;
+    this.loadStudents();
   }
 
-  // Placeholder methods, cần triển khai logic thực tế
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadStudents(): void {
     this.isLoading = true;
-    // Gọi service để lấy data
-    console.log('Loading students...');
-    // Tạm thời hoàn thành giả
-    setTimeout(() => {
-      this.students = this.mockStudents;
-      this.dataSource.data = this.students;
-      this.isLoading = false;
-    }, 1000);
+    this.studentService.getStudents()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (students) => {
+          this.students = students;
+          this.dataSource.data = this.students;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading students:', error);
+          this.isLoading = false;
+          this.snackBar.open('Không thể tải danh sách sinh viên', 'Đóng', {
+            duration: 3000
+          });
+        }
+      });
   }
 
   onEdit(student: Student): void {
-    console.log('Edit student:', student);
-    // Mở dialog chỉnh sửa
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '500px'; // Giống accounts
+    dialogConfig.width = '500px';
     dialogConfig.maxWidth = '90vw';
     dialogConfig.maxHeight = '90vh';
-    dialogConfig.panelClass = 'custom-dialog'; // Áp dụng class global nếu cần
-    dialogConfig.data = { student }; // Truyền student vào dialog
+    dialogConfig.panelClass = 'custom-dialog';
+    dialogConfig.data = { student };
 
     const dialogRef = this.dialog.open(StudentFormDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Updating student:', result);
-        // TODO: Implement the actual update logic (call service)
-        // Tạm cập nhật mock data
-        const index = this.students.findIndex(s => s.id === result.id);
-        if (index > -1) {
-          this.students[index] = { ...this.students[index], ...result };
-          this.dataSource.data = [...this.students]; // Trigger table update
-        }
+        this.isLoading = true;
+        this.studentService.updateStudent(student.id, result)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.loadStudents();
+              this.snackBar.open('Cập nhật sinh viên thành công', 'Đóng', {
+                duration: 3000
+              });
+            },
+            error: (error) => {
+              console.error('Error updating student:', error);
+              this.isLoading = false;
+              this.snackBar.open('Không thể cập nhật sinh viên', 'Đóng', {
+                duration: 3000
+              });
+            }
+          });
       }
     });
   }
 
   onDelete(student: Student): void {
-    console.log('Delete student:', student);
-    // Hiển thị confirm dialog
-    this.studentToDelete = student;
-    this.confirmDialogTitle = 'Xác nhận xóa';
-    this.confirmDialogMessage = `Bạn có chắc chắn muốn xóa sinh viên ${student.fullName}?`;
-    this.showConfirmDialog = true;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Xác nhận xóa sinh viên',
+        message: `Bạn có chắc chắn muốn xóa sinh viên "${student.fullname}" không? Hành động này không thể hoàn tác.`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.deleteStudent(student.id);
+      }
+    });
   }
 
-  confirmDeleteStudent(): void {
-    if (this.studentToDelete) {
-      console.log('Confirmed delete:', this.studentToDelete);
-      // Gọi service xóa hoặc cập nhật mock data
-      this.students = this.students.filter(s => s.id !== this.studentToDelete!.id);
-      this.dataSource.data = this.students;
-      this.showConfirmDialog = false;
-      this.studentToDelete = null;
-    }
+  private deleteStudent(studentId: string): void {
+    this.isLoading = true;
+    this.studentService.deleteStudent(studentId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadStudents();
+          this.snackBar.open('Xóa sinh viên thành công', 'Đóng', {
+            duration: 3000
+          });
+        },
+        error: (error) => {
+          console.error('Error deleting student:', error);
+          this.isLoading = false;
+          this.snackBar.open('Không thể xóa sinh viên', 'Đóng', {
+            duration: 3000
+          });
+        }
+      });
   }
 
   onCreate(): void {
-    console.log('Create new student');
-    // Mở dialog tạo mới
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '500px'; // Giống accounts
+    dialogConfig.width = '500px';
     dialogConfig.maxWidth = '90vw';
     dialogConfig.maxHeight = '90vh';
-    dialogConfig.panelClass = 'custom-dialog'; // Áp dụng class global nếu cần
-    dialogConfig.data = {}; // Không truyền student vì là tạo mới
+    dialogConfig.panelClass = 'custom-dialog';
+    dialogConfig.data = {};
 
     const dialogRef = this.dialog.open(StudentFormDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Creating new student:', result);
-        // TODO: Implement the actual creation logic (call service)
-        // Tạm thêm vào mock data
-        const newId = this.students.length > 0 ? Math.max(...this.students.map(s => s.id)) + 1 : 1;
-        const newStudent: Student = { id: newId, ...result };
-        this.students.push(newStudent);
-        this.dataSource.data = [...this.students]; // Trigger table update
+        this.isLoading = true;
+        this.studentService.createStudent(result)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.loadStudents();
+              this.snackBar.open('Thêm sinh viên thành công', 'Đóng', {
+                duration: 3000
+              });
+            },
+            error: (error) => {
+              console.error('Error creating student:', error);
+              this.isLoading = false;
+              this.snackBar.open('Không thể thêm sinh viên', 'Đóng', {
+                duration: 3000
+              });
+            }
+          });
       }
     });
   }

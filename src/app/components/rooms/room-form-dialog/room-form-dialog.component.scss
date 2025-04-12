@@ -7,6 +7,7 @@
 .room-form {
   display: flex;
   flex-direction: column;
+  padding: 10px 0;
   gap: 16px;
 
   mat-form-field:first-child {
@@ -27,4 +28,53 @@ mat-dialog-actions {
   button {
     min-width: 100px;
   }
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.selected-students-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.selected-student-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  margin: 5px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.student-info {
+  flex-grow: 1;
+}
+
+.remove-student-btn {
+  margin-left: 8px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.no-students-message {
+  text-align: center;
+  color: #f44336;
+  font-style: italic;
+}
+
+/* Styles to apply on custom-dialog */
+.custom-dialog .mat-mdc-dialog-container {
+  padding: 24px;
+  border-radius: 8px;
 }

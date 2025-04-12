@@ -4,29 +4,52 @@
 // Chỉ cần đổi tên class container thành .students-container
 .students-container {
   padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 
-  h1 {
-    margin: 0;
-    color: $text-primary;
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+    }
+  }
+
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
   }
 
   mat-table {
     width: 100%;
-    background: white;
-    border-radius: $border-radius;
-    box-shadow: $shadow-sm;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
 
-    .mat-header-cell {
-      font-weight: bold;
-      color: $text-primary;
+    mat-header-row {
+      background-color: #f5f5f5;
     }
 
-    .mat-cell {
-      color: $text-secondary;
+    mat-row {
+      &:hover {
+        background-color: #f9f9f9;
+      }
     }
 
-    .mat-row:hover {
-      background-color: $background-hover;
+    mat-cell, mat-header-cell {
+      padding: 0 16px;
+    }
+
+    .mat-column-actions {
+      max-width: 100px;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 
@@ -40,11 +63,31 @@
     // Chỉ cần style cho nút icon trong bảng nếu cần
   }
   
-  .loading-spinner {
+  .empty-state {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 200px;
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-sm;
+    padding: 40px;
+    text-align: center;
+    
+    mat-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      margin-bottom: 16px;
+      color: $text-secondary;
+    }
+    
+    p {
+      font-size: 18px;
+      color: $text-secondary;
+      margin: 0;
+    }
   }
 }
 
