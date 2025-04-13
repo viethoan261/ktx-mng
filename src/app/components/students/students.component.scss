@@ -12,12 +12,32 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
 
     h1 {
       margin: 0;
       font-size: 24px;
       font-weight: 500;
     }
+
+    .search-container {
+      flex-grow: 1;
+      max-width: 400px;
+      
+      mat-form-field {
+        width: 100%;
+      }
+    }
+
+    button {
+      white-space: nowrap;
+    }
+  }
+
+  .filter-field {
+    width: 100%;
+    margin-bottom: 16px;
   }
 
   .loading-spinner {
@@ -26,10 +46,15 @@
     padding: 40px 0;
   }
 
+  .table-container {
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+
   mat-table {
     width: 100%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
     overflow: hidden;
 
     mat-header-row {

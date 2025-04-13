@@ -33,38 +33,40 @@ mat-dialog-actions {
 .loading-spinner {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 200px;
+  padding: 20px;
 }
 
 .selected-students-container {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
+  padding: 16px;
   background-color: #f9f9f9;
-}
-
-.selected-student-chip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  margin: 5px 0;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.student-info {
-  flex-grow: 1;
-}
-
-.remove-student-btn {
-  margin-left: 8px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  
+  h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #333;
+  }
+  
+  .selected-student-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    
+    .student-info {
+      flex: 1;
+    }
+    
+    .remove-student-btn {
+      margin-left: 8px;
+    }
+  }
 }
 
 .no-students-message {
@@ -77,4 +79,51 @@ mat-dialog-actions {
 .custom-dialog .mat-mdc-dialog-container {
   padding: 24px;
   border-radius: 8px;
+}
+
+// Add styles that will be picked up by Material's overlay
+::ng-deep {
+  .student-select-panel {
+    margin-top: 0 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    border-radius: 4px !important;
+    overflow: visible !important;
+    
+    mat-option {
+      padding: 10px 16px !important;
+      height: auto !important;
+      line-height: 1.4 !important;
+      
+      &[disabled] {
+        height: auto !important;
+        min-height: 48px !important;
+        padding: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #f44336 !important;
+        font-style: italic !important;
+        opacity: 1 !important;
+      }
+    }
+    
+    .mat-mdc-option-text {
+      white-space: normal !important;
+      overflow: visible !important;
+    }
+  }
+  
+  .status-select-panel {
+    margin-top: 0 !important;
+  }
+  
+  // Fix specifically for the empty state message
+  .mat-mdc-form-field-subscript-wrapper {
+    display: block !important;
+  }
+  
+  // Ensure no extra padding in the panel
+  .mat-mdc-select-panel {
+    padding: 0 !important;
+  }
 }

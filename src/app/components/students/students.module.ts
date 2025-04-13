@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'; // Cần cho 
 import { MatInputModule } from '@angular/material/input'; // Cần cho dialog form
 import { MatSelectModule } from '@angular/material/select'; // Cần cho dialog form
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Cần cho loading
+import { MatPaginatorModule } from '@angular/material/paginator'; // Cần cho phân trang
 import { ConfirmDialogModule } from '../common/confirm-dialog/confirm-dialog.module'; // Cần cho confirm dialog
 import { EmptyStateModule } from '../common/empty-state/empty-state.module'; // Cần cho empty state
 
@@ -31,6 +32,7 @@ import { StudentFormDialogComponent } from './student-form-dialog/student-form-d
     MatInputModule, // Cần cho dialog form
     MatSelectModule, // Cần cho dialog form
     MatProgressSpinnerModule, // Cần cho loading
+    MatPaginatorModule, // Cần cho phân trang
     ConfirmDialogModule, // Cần cho confirm dialog
     EmptyStateModule // Cần cho empty state
   ],

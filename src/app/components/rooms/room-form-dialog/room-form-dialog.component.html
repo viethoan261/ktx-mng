@@ -35,7 +35,8 @@
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Tình trạng</mat-label>
-      <mat-select formControlName="status">
+      <mat-select formControlName="status" panelClass="status-select-panel" 
+                 disableOptionCentering appFixSelectPosition>
         <mat-option value="EMPTY">Trống</mat-option>
         <mat-option value="OCCUPIED">Đã thuê</mat-option>
         <mat-option value="MAINTENANCE">Bảo trì</mat-option>
@@ -53,11 +54,10 @@
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Chọn sinh viên</mat-label>
-      <mat-select formControlName="studentIds" multiple [compareWith]="compareStudents">
+      <mat-select formControlName="studentIds" multiple [compareWith]="compareStudents" 
+                 panelClass="student-select-panel" disableOptionCentering appFixSelectPosition>
         <!-- Hiển thị thông báo khi không có sinh viên nào -->
-        <div *ngIf="displayStudents.length === 0" class="no-students-message">
-          <mat-option disabled>Hiện tại không còn sinh viên nào chưa có phòng</mat-option>
-        </div>
+        <mat-option *ngIf="displayStudents.length === 0" disabled>Hiện tại không còn sinh viên nào chưa có phòng</mat-option>
         
         <!-- Hiển thị danh sách sinh viên -->
         <mat-option *ngFor="let student of displayStudents" [value]="student.id">

@@ -134,6 +134,6 @@ export class AuthService {
   // Kiểm tra người dùng có quyền admin không
   isAdmin(): boolean {
     const user = this.getCurrentUser();
-    return user?.role === 'admin';
+    return user?.role === 'ADMIN';
   }
 }

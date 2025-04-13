@@ -184,3 +184,242 @@ html, body {
   border-radius: 8px !important;
   overflow: hidden !important;
 }
+
+/* Custom Dialog Container - Fix accessibility issues */
+.custom-dialog-container {
+  .mat-mdc-dialog-container {
+    padding: 0;
+  }
+  
+  // Ensure dialog appears above everything
+  .cdk-overlay-backdrop {
+    z-index: 1000;
+  }
+  
+  .cdk-global-overlay-wrapper {
+    z-index: 1001;
+  }
+}
+
+// Fix for accessibility issue with dialogs
+.cdk-overlay-container {
+  // Ensure overlay container is outside the app-root scope
+  z-index: 1000;
+  position: fixed !important;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.cdk-global-overlay-wrapper {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+// Dialog overlay styles
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  &.custom-dialog-backdrop {
+    opacity: 0.7;
+  }
+}
+
+// Force overlay panes to be visible
+.cdk-overlay-pane {
+  position: static;
+  pointer-events: auto;
+  box-sizing: border-box;
+  z-index: 1000;
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+// Custom dialog container wrapper
+.dialog-container-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  background-color: transparent;
+}
+
+// Override Material styles for dialogs within our wrapper
+.dialog-container-wrapper .mat-mdc-dialog-container {
+  max-height: 90vh;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  pointer-events: auto;
+  animation: dialogFadeIn 0.2s ease-out;
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Fix z-index for overlay container
+.cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+// Very light backdrop - just enough to focus attention but not darken the screen
+.cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+// Add styles for standard Material dialogs to ensure consistency
+.mat-mdc-dialog-container, .mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  background-color: white !important;
+  overflow: hidden !important;
+}
+
+// Fix for mat-select dropdown positioning
+.select-panel-class {
+  transform: translateY(0) !important;
+  margin-top: 30px !important;
+}
+
+// Ensure all dropdown panels (select, autocomplete, etc.) appear below their triggers
+.cdk-overlay-connected-position-bounding-box {
+  position: absolute !important;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content !important;
+  min-height: fit-content !important;
+}
+
+// Fix for mat-select dropdown positioning
+.mat-select-panel-wrap {
+  flex-basis: 100%;
+  position: relative !important;
+}
+
+// Make select panel follow the width of its trigger element
+.mat-mdc-select-panel {
+  min-width: fit-content !important;
+  max-width: fit-content !important;
+}
+
+// Ensure the overlay pane appears relative to its trigger
+.cdk-overlay-pane {
+  position: relative !important;
+  pointer-events: auto;
+  box-sizing: border-box;
+  z-index: 1000;
+  display: flex;
+}
+
+// Override any absolute positioning on the select panel
+.mat-mdc-select-panel {
+  position: relative !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2),
+              0 4px 5px 0 rgba(0, 0, 0, 0.14),
+              0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+// Ensure the overlay container renders with proper z-index
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+// Ensure overlay backdrop works correctly
+.cdk-overlay-backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  pointer-events: auto;
+  transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+}
+
+// Remove any absolute positioning classes that might be applied
+.cdk-global-overlay-wrapper, 
+.cdk-overlay-pane {
+  position: relative !important;
+  pointer-events: auto;
+}
+
+// Specific styles for select panels in room form
+.status-select-panel, .student-select-panel {
+  margin-top: 40px !important;
+  max-width: none !important;
+  width: auto !important;
+  position: relative !important;
+}
+
+// Ensure all dropdown panels have margin top to show below trigger elements
+.cdk-overlay-pane:not(.mat-mdc-dialog-panel) {
+  margin-top: 40px !important;
+}
+
+// For panels inside dialog
+.custom-dialog-container {
+  .mat-select-panel-wrap, .mat-mdc-select-panel {
+    position: relative !important;
+    transform: none !important;
+  }
+}
+
+// Override Material's dropdown position calculation for select dropdowns
+.cdk-overlay-container {
+  .mat-mdc-select-panel-wrap {
+    pointer-events: auto !important;
+    position: static !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+  
+  .mat-mdc-select-panel {
+    position: static !important;
+    transform: none !important;
+    margin-top: 0 !important;
+    max-height: 80vh !important;
+  }
+  
+  // Force disable any transforms
+  .cdk-overlay-pane {
+    transform: none !important;
+    margin: 0 !important;
+  }
+}
+
+// Specifically style the empty state option
+mat-option[disabled] {
+  padding: 12px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  color: #f44336 !important;
+  font-style: italic !important;
+  opacity: 1 !important;
+}

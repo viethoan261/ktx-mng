@@ -12,7 +12,7 @@
     </div>
     <div class="dialog-actions">
       <button mat-button class="cancel-button" (click)="onClose()">Hủy</button>
-      <button mat-raised-button color="warn" class="confirm-button" (click)="onConfirm()">Xóa</button>
+      <button mat-raised-button [color]="buttonColor" class="confirm-button" (click)="onConfirm()" #confirmButton>{{ confirmButtonText }}</button>
     </div>
   </div>
 </div>
@@ -25,7 +25,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button class="cancel-button" (click)="onClose()">Hủy</button>
-    <button mat-raised-button color="warn" class="confirm-button" (click)="onConfirm()">Xóa</button>
+    <button mat-raised-button [color]="buttonColor" class="confirm-button" (click)="onConfirm()" #confirmButton>{{ confirmButtonText }}</button>
   </mat-dialog-actions>
 </div>
 

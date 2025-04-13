@@ -8,13 +8,17 @@
       <mat-icon matListItemIcon>manage_accounts</mat-icon>
       <span matListItemTitle>Quản lý tài khoản</span>
     </a>
-    <a mat-list-item routerLink="/students" routerLinkActive="active">
+    <a *ngIf="userRole === 'ADMIN'" mat-list-item routerLink="/students" routerLinkActive="active">
       <mat-icon matListItemIcon>school</mat-icon>
       <span matListItemTitle>Quản lý sinh viên</span>
     </a>
     <a *ngIf="userRole === 'ADMIN'" mat-list-item routerLink="/rooms" routerLinkActive="active">
       <mat-icon matListItemIcon>apartment</mat-icon>
       <span matListItemTitle>Quản lý phòng</span>
+    </a>
+    <a mat-list-item routerLink="/requests" routerLinkActive="active">
+      <mat-icon matListItemIcon>question_answer</mat-icon>
+      <span matListItemTitle>Quản lý yêu cầu</span>
     </a>
     <!-- <a mat-list-item routerLink="/contracts" routerLinkActive="active">
       <mat-icon matListItemIcon>description</mat-icon>

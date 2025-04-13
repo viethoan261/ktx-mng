@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { Student } from '../../models/student.model';
 import { StudentService } from '../../services/student.service';
 import { StudentFormDialogComponent } from './student-form-dialog/student-form-dialog.component';
@@ -26,6 +27,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
   confirmDialogMessage = '';
   studentToDelete: Student | null = null;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(
     private studentService: StudentService,
     private dialog: MatDialog,
@@ -36,6 +39,10 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadStudents();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {
@@ -170,5 +177,11 @@ export class StudentsComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  // Add this method for search functionality
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

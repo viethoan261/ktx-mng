@@ -5,6 +5,8 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsComponent } from './components/students/students.component';
+import { RequestsComponent } from './components/requests/requests.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
@@ -23,10 +25,11 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [authGuard], // Sử dụng functional guard
     children: [
-      { path: 'dashboard', component: AccountsComponent }, // Tạm thời dùng AccountsComponent làm dashboard
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'accounts', component: AccountsComponent, canActivate: [adminGuard] },
       { path: 'rooms', component: RoomsComponent, canActivate: [adminGuard] },
       { path: 'students', component: StudentsComponent },
+      { path: 'requests', component: RequestsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

@@ -7,6 +7,13 @@
     </button>
   </div>
   
+  <!-- Filter field -->
+  <mat-form-field class="filter-field">
+    <mat-label>Tìm kiếm</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Nhập từ khóa">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  
   <div *ngIf="isLoading" class="loading-spinner">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
@@ -17,40 +24,44 @@
     message="Không tìm thấy sinh viên nào">
   </app-empty-state>
   
-  <mat-table [dataSource]="dataSource" *ngIf="!isLoading && dataSource.data.length > 0">
-    <ng-container matColumnDef="fullname">
-      <mat-header-cell *matHeaderCellDef>Họ và tên</mat-header-cell>
-      <mat-cell *matCellDef="let student">{{ student.fullname }}</mat-cell>
-    </ng-container>
+  <div *ngIf="!isLoading && dataSource.data.length > 0" class="table-container">
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="fullname">
+        <mat-header-cell *matHeaderCellDef>Họ và tên</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.fullname }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell *matCellDef="let student">{{ student.email }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.email }}</mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="phone">
+        <mat-header-cell *matHeaderCellDef>Số điện thoại</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.phone }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="roomNumber">
+        <mat-header-cell *matHeaderCellDef>Phòng</mat-header-cell>
+        <mat-cell *matCellDef="let student">{{ student.roomNumber || 'Chưa có phòng' }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
+        <mat-cell *matCellDef="let student">
+          <button mat-icon-button color="primary" (click)="onEdit(student)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(student)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
     
-    <ng-container matColumnDef="phone">
-      <mat-header-cell *matHeaderCellDef>Số điện thoại</mat-header-cell>
-      <mat-cell *matCellDef="let student">{{ student.phone }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="roomNumber">
-      <mat-header-cell *matHeaderCellDef>Phòng</mat-header-cell>
-      <mat-cell *matCellDef="let student">{{ student.roomNumber || 'Chưa có phòng' }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
-      <mat-cell *matCellDef="let student">
-        <button mat-icon-button color="primary" (click)="onEdit(student)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="onDelete(student)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Chọn trang"></mat-paginator>
+  </div>
 </div>

@@ -1,0 +1,118 @@
+<div class="requests-container">
+  <div class="header">
+    <h1 class="mat-h1">Quản lý yêu cầu</h1>
+    <button mat-raised-button color="primary" (click)="createRequest()">
+      <mat-icon>add</mat-icon>
+      Thêm yêu cầu
+    </button>
+  </div>
+
+  <!-- Filter field -->
+  <mat-form-field class="filter-field">
+    <mat-label>Tìm kiếm</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Nhập từ khóa">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Empty state when no data -->
+  <app-empty-state 
+    *ngIf="!isLoading && dataSource.data.length === 0"
+    icon="inbox"
+    message="Không tìm thấy yêu cầu nào">
+  </app-empty-state>
+
+  <!-- Table container -->
+  <div class="table-container mat-elevation-z2" *ngIf="!isLoading && dataSource.data.length > 0" [class.loading]="isLoading">
+    <mat-table [dataSource]="dataSource" matSort>
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Mã </mat-header-cell>
+        <mat-cell *matCellDef="let request"> {{request.id}} </mat-cell>
+      </ng-container>
+
+      <!-- Student Name Column -->
+      <ng-container matColumnDef="studentName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Người tạo </mat-header-cell>
+        <mat-cell *matCellDef="let request"> {{request.studentName}} </mat-cell>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu đề </mat-header-cell>
+        <mat-cell *matCellDef="let request" class="title-cell"> {{request.title}} </mat-cell>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Loại </mat-header-cell>
+        <mat-cell *matCellDef="let request"> {{request.type}} </mat-cell>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái </mat-header-cell>
+        <mat-cell *matCellDef="let request">
+          <span class="status-badge" [style.background-color]="getStatusColor(request.status)">
+            {{request.status}}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Created Date Column -->
+      <ng-container matColumnDef="createdDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo </mat-header-cell>
+        <mat-cell *matCellDef="let request"> {{formatDate(request.createdDate)}} </mat-cell>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Thao tác </mat-header-cell>
+        <mat-cell *matCellDef="let request">
+          <button mat-icon-button color="primary" matTooltip="Xem chi tiết" (click)="viewDetails(request)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <ng-container *ngIf="isAdmin && request.status === 'PENDING'">
+            <button 
+              mat-icon-button 
+              matTooltip="Phê duyệt" 
+              (click)="approveRequest(request.id)" 
+              color="primary">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+            <button 
+              mat-icon-button 
+              matTooltip="Từ chối" 
+              (click)="rejectRequest(request.id)" 
+              color="warn">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </ng-container>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Row setup -->
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row 
+        *matRowDef="let row; columns: displayedColumns"
+        class="request-row"
+        [class.pending-row]="row.status === 'PENDING'"
+        [class.approved-row]="row.status === 'APPROVED'"
+        [class.rejected-row]="row.status === 'REJECTED'"
+        [class.resolved-row]="row.status === 'RESOLVED'">
+      </mat-row>
+    </mat-table>
+
+    <!-- Paginator -->
+    <mat-paginator 
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageSize]="10"
+      showFirstLastButtons
+      aria-label="Chọn trang">
+    </mat-paginator>
+  </div>
+</div> 
