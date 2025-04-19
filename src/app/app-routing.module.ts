@@ -8,6 +8,8 @@ import { StudentsComponent } from './components/students/students.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { SecurityComponent } from './components/security/security.component';
 import { MaintenanceComponent } from './components/maintenance/maintenance.component';
+import { PricesComponent } from './components/prices/prices.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
@@ -45,6 +47,15 @@ const routes: Routes = [
         path: 'security',
         component: SecurityComponent,
         canActivate: [adminGuard]
+      },
+      { 
+        path: 'prices',
+        component: PricesComponent,
+        canActivate: [adminGuard]
+      },
+      { 
+        path: 'orders',
+        component: OrdersComponent
       },
       { path: 'requests', component: RequestsComponent },
       { 

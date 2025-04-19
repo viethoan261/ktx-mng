@@ -1,0 +1,249 @@
+<style>
+  .month-filter-container {
+    margin-bottom: 15px;
+  }
+  
+  .month-filter {
+    width: 200px;
+  }
+  
+  .search-field {
+    width: 400px;
+  }
+  
+  @media (min-width: 768px) {
+    .month-filter-container,
+    .search-container {
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+</style>
+
+<div class="container">
+  <h1 class="page-title">Quản Lý Hóa Đơn</h1>
+
+  <!-- Orders Section -->
+  <mat-card class="order-card">
+    <mat-card-header>
+      <mat-card-title *ngIf="userRole === 'ADMIN'">
+        <span *ngIf="filterMonth !== 0">Hóa Đơn Tháng {{ filterMonth }}/{{ currentYear }}</span>
+        <span *ngIf="filterMonth === 0">Tất Cả Hóa Đơn</span>
+      </mat-card-title>
+      <mat-card-title *ngIf="userRole === 'STUDENT'">Hóa Đơn Của Bạn</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Month Filter - Only for ADMIN -->
+      <div class="month-filter-container" *ngIf="userRole === 'ADMIN'">
+        <mat-form-field appearance="outline" class="month-filter">
+          <mat-label>Lọc theo tháng</mat-label>
+          <mat-select [(ngModel)]="filterMonth" (selectionChange)="filterOrdersByMonth()">
+            <mat-option [value]="0">Tất cả các tháng</mat-option>
+            <mat-option *ngFor="let month of monthsForFilter" [value]="month.value">
+              {{ month.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+      <!-- Search Field - Only for ADMIN -->
+      <div class="search-container" *ngIf="userRole === 'ADMIN'">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Tìm kiếm theo tên sinh viên hoặc phòng</mat-label>
+          <input matInput [(ngModel)]="searchQuery" (input)="onSearchChange($event)">
+          <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="loadingOrders" class="loading-spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loadingOrders && filteredOrders.length > 0" class="table-responsive">
+        <table mat-table [dataSource]="filteredOrders" class="order-table mat-elevation-z2">
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let order">{{ order.id }}</td>
+          </ng-container>
+
+          <!-- Student Name Column - Only for ADMIN -->
+          <ng-container matColumnDef="studentName">
+            <th mat-header-cell *matHeaderCellDef>Sinh viên</th>
+            <td mat-cell *matCellDef="let order">{{ order.studentName }}</td>
+          </ng-container>
+
+          <!-- Room Number Column -->
+          <ng-container matColumnDef="roomNumber">
+            <th mat-header-cell *matHeaderCellDef>Phòng</th>
+            <td mat-cell *matCellDef="let order">{{ order.roomNumber }}</td>
+          </ng-container>
+
+          <!-- Electric Number Column -->
+          <ng-container matColumnDef="electricNumberPerMonth">
+            <th mat-header-cell *matHeaderCellDef>Số Điện (kWh)</th>
+            <td mat-cell *matCellDef="let order">{{ order.electricNumberPerMonth }}</td>
+          </ng-container>
+
+          <!-- Water Number Column -->
+          <ng-container matColumnDef="waterNumberPerMonth">
+            <th mat-header-cell *matHeaderCellDef>Số Nước (m³)</th>
+            <td mat-cell *matCellDef="let order">{{ order.waterNumberPerMonth }}</td>
+          </ng-container>
+
+          <!-- Electricity Column -->
+          <ng-container matColumnDef="electricity">
+            <th mat-header-cell *matHeaderCellDef>Tiền Điện</th>
+            <td mat-cell *matCellDef="let order">{{ formatCurrency(order.electricity) }}</td>
+          </ng-container>
+
+          <!-- Water Column -->
+          <ng-container matColumnDef="water">
+            <th mat-header-cell *matHeaderCellDef>Tiền Nước</th>
+            <td mat-cell *matCellDef="let order">{{ formatCurrency(order.water) }}</td>
+          </ng-container>
+
+          <!-- Service Column -->
+          <ng-container matColumnDef="service">
+            <th mat-header-cell *matHeaderCellDef>Tiền Dịch Vụ</th>
+            <td mat-cell *matCellDef="let order">{{ formatCurrency(order.service) }}</td>
+          </ng-container>
+
+          <!-- Room Column -->
+          <ng-container matColumnDef="room">
+            <th mat-header-cell *matHeaderCellDef>Tiền Phòng</th>
+            <td mat-cell *matCellDef="let order">{{ formatCurrency(order.room) }}</td>
+          </ng-container>
+
+          <!-- Total Column -->
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Tổng Cộng</th>
+            <td mat-cell *matCellDef="let order" class="total-column">{{ formatCurrency(order.total) }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Trạng Thái</th>
+            <td mat-cell *matCellDef="let order">
+              <span [ngClass]="{'status-pending': order.status === 'Pending', 'status-paid': order.status === 'Paid'}">
+                {{ order.status }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Created Date Column -->
+          <ng-container matColumnDef="createdDate">
+            <th mat-header-cell *matHeaderCellDef>Ngày Tạo</th>
+            <td mat-cell *matCellDef="let order">{{ formatDate(order.createdDate) }}</td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Thao tác</th>
+            <td mat-cell *matCellDef="let order">
+              <div class="action-buttons-cell">
+                <button 
+                  mat-mini-fab 
+                  color="primary" 
+                  *ngIf="canMarkAsPaid(order)"
+                  [disabled]="isUpdating(order.id)"
+                  (click)="updateOrderStatus(order.id)">
+                  <mat-icon>check</mat-icon>
+                </button>
+                
+                <mat-spinner diameter="30" *ngIf="isUpdating(order.id)"></mat-spinner>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="orderTableColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: orderTableColumns;"></tr>
+        </table>
+      </div>
+
+      <div *ngIf="!loadingOrders && orders.length > 0 && filteredOrders.length === 0" class="no-orders">
+        <p>Không tìm thấy hóa đơn nào khớp với từ khóa "{{ searchQuery }}"</p>
+        <button mat-button color="primary" (click)="clearSearch()">Xóa tìm kiếm</button>
+      </div>
+
+      <div *ngIf="!loadingOrders && orders.length === 0" class="no-orders">
+        <p *ngIf="userRole === 'ADMIN'">Chưa có hóa đơn nào cho tháng {{ currentMonth }}/{{ currentYear }}</p>
+        <p *ngIf="userRole === 'STUDENT'">Bạn chưa có hóa đơn nào</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Create New Orders Section - Only for ADMIN -->
+  <mat-card class="order-card" [class.disabled-card]="hasExistingOrders" *ngIf="userRole === 'ADMIN'">
+    <mat-card-header>
+      <mat-card-title>Tạo Hóa Đơn Cho Tháng: {{ previousMonth }}</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div *ngIf="hasExistingOrders" class="warning-message">
+        <mat-icon>warning</mat-icon>
+        <span>Hóa đơn đã được tạo cho tháng này. Không thể tạo thêm.</span>
+      </div>
+
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading" [class.form-disabled]="hasExistingOrders">
+        <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+          <table class="room-table mat-elevation-z2" *ngIf="rooms.length > 0">
+            <thead>
+              <tr>
+                <th>Phòng</th>
+                <th>Số Điện (kWh)</th>
+                <th>Số Nước (m³)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let orderControl of ordersArray.controls; let i = index">
+                <ng-container [formGroup]="getFormGroup(orderControl)">
+                  <td>{{ orderControl.get('roomName')?.value }}</td>
+                  <td>
+                    <mat-form-field appearance="outline">
+                      <input matInput type="number" formControlName="electricNumberPerMonth" min="0" [disabled]="hasExistingOrders">
+                      <mat-error *ngIf="orderControl.get('electricNumberPerMonth')?.invalid">
+                        Số điện phải lớn hơn hoặc bằng 0
+                      </mat-error>
+                    </mat-form-field>
+                  </td>
+                  <td>
+                    <mat-form-field appearance="outline">
+                      <input matInput type="number" formControlName="waterNumberPerMonth" min="0" [disabled]="hasExistingOrders">
+                      <mat-error *ngIf="orderControl.get('waterNumberPerMonth')?.invalid">
+                        Số nước phải lớn hơn hoặc bằng 0
+                      </mat-error>
+                    </mat-form-field>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="rooms.length === 0" class="no-rooms">
+            <p>Không có phòng nào để tạo hóa đơn</p>
+          </div>
+
+          <div class="action-buttons" *ngIf="rooms.length > 0">
+            <button mat-raised-button color="primary" type="submit" [disabled]="orderForm.invalid || submitting || hasExistingOrders">
+              <mat-icon>receipt</mat-icon>
+              Tạo Hóa Đơn
+            </button>
+            <button mat-button type="button" (click)="resetForm()" [disabled]="submitting || hasExistingOrders">
+              <mat-icon>refresh</mat-icon>
+              Làm Mới
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div> 

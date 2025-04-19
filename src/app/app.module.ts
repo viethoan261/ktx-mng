@@ -42,6 +42,8 @@ import { NotificationsModule } from './components/notifications/notifications.mo
 import { MaintenanceModule } from './components/maintenance/maintenance.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RequestsComponent, RequestDetailDialogComponent, RequestFormDialogComponent, ResponseDialogComponent } from './components/requests/requests.component';
+import { PricesComponent } from './components/prices/prices.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 // Import interceptor
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -149,7 +151,9 @@ export class FixSelectPositionDirective implements AfterViewInit {
     DashboardComponent,
     NotificationDetailComponent,
     SecurityComponent,
-    SecurityFormDialogComponent
+    SecurityFormDialogComponent,
+    PricesComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
