@@ -1,0 +1,79 @@
+.maintenance-form-dialog {
+  min-width: 500px;
+  max-width: 650px;
+  
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  
+  mat-dialog-content {
+    padding-top: 16px;
+  }
+  
+  .form-row {
+    margin-bottom: 16px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    &.cols-2 {
+      display: flex;
+      gap: 16px;
+      
+      mat-form-field {
+        flex: 1;
+      }
+    }
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+  
+  mat-dialog-actions {
+    padding: 24px 0 8px 0;
+    margin-bottom: 0;
+    margin-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    
+    button {
+      min-width: 90px;
+      
+      mat-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 16px;
+    gap: 12px;
+    
+    button:last-child {
+      margin-right: 16px;
+    }
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .maintenance-form-dialog {
+    width: 100%;
+    
+    .form-row.cols-2 {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+} 

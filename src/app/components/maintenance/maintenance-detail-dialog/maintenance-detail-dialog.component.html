@@ -1,0 +1,83 @@
+<div class="maintenance-detail-dialog">
+  <h2 mat-dialog-title>Chi tiết công việc bảo trì</h2>
+  
+  <mat-dialog-content>
+    <div class="detail-container">
+      <div class="detail-row">
+        <span class="label">Tiêu đề:</span>
+        <span class="value">{{task.title}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Mô tả:</span>
+        <span class="value description">{{task.description || 'Không có mô tả'}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Loại công việc:</span>
+        <span class="value">
+          <span class="badge type-badge" [ngClass]="getTypeClass(task.taskType)">
+            {{getTypeLabel(task.taskType)}}
+          </span>
+        </span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Vị trí:</span>
+        <span class="value">{{task.location || 'Chưa chỉ định'}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Trạng thái:</span>
+        <span class="value">
+          <span class="badge status-badge" [ngClass]="getStatusClass(task.status)">
+            {{getStatusLabel(task.status)}}
+          </span>
+        </span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Mức độ ưu tiên:</span>
+        <span class="value">
+          <span class="badge priority-badge" [ngClass]="getPriorityClass(task.priority)">
+            {{getPriorityLabel(task.priority)}}
+          </span>
+        </span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Ngày lên lịch:</span>
+        <span class="value">{{formatDate(task.scheduledDate)}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Ngày hoàn thành:</span>
+        <span class="value">{{formatDate(task.completedDate)}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Người phụ trách:</span>
+        <span class="value">{{task.assignedTo || 'Chưa phân công'}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Ghi chú:</span>
+        <span class="value notes">{{task.notes || 'Không có ghi chú'}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Ngày tạo:</span>
+        <span class="value">{{formatDate(task.createdDate)}}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="label">Cập nhật lần cuối:</span>
+        <span class="value">{{formatDate(task.modifiedDate)}}</span>
+      </div>
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Đóng</button>
+  </mat-dialog-actions>
+</div> 

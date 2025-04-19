@@ -39,6 +39,7 @@ import { RoomFormDialogComponent } from './components/rooms/room-form-dialog/roo
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsModule } from './components/students/students.module';
 import { NotificationsModule } from './components/notifications/notifications.module';
+import { MaintenanceModule } from './components/maintenance/maintenance.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RequestsComponent, RequestDetailDialogComponent, RequestFormDialogComponent, ResponseDialogComponent } from './components/requests/requests.component';
 
@@ -171,6 +172,7 @@ export class FixSelectPositionDirective implements AfterViewInit {
     MatSelectModule,
     StudentsModule,
     NotificationsModule,
+    MaintenanceModule,
     MatSnackBarModule,
     MatPaginatorModule,
     MatTooltipModule,

@@ -1,0 +1,126 @@
+.maintenance-detail-dialog {
+  max-width: 600px;
+  
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  
+  .detail-container {
+    padding: 8px 0;
+  }
+  
+  .detail-row {
+    display: flex;
+    margin-bottom: 12px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .label {
+      flex: 0 0 130px;
+      font-weight: 500;
+      color: #666;
+    }
+    
+    .value {
+      flex: 1;
+      
+      &.description, &.notes {
+        white-space: pre-line;
+      }
+    }
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    min-width: 80px;
+  }
+  
+  // Status badges
+  .status-badge {
+    &.status-scheduled {
+      background-color: #e8eaf6;
+      color: #3949ab;
+    }
+    
+    &.status-in_progress {
+      background-color: #fff8e1;
+      color: #ff8f00;
+    }
+    
+    &.status-completed {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    &.status-cancelled {
+      background-color: #fafafa;
+      color: #757575;
+    }
+  }
+  
+  // Priority badges
+  .priority-badge {
+    &.priority-low {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+    
+    &.priority-medium {
+      background-color: #fff8e1;
+      color: #ff8f00;
+    }
+    
+    &.priority-high {
+      background-color: #fce4ec;
+      color: #d81b60;
+    }
+    
+    &.priority-urgent {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+  }
+  
+  // Type badges
+  .type-badge {
+    &.type-maintenance {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+    
+    &.type-cleaning {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    &.type-installation {
+      background-color: #ede7f6;
+      color: #6a1b9a;
+    }
+    
+    &.type-inspection {
+      background-color: #fff8e1;
+      color: #ff8f00;
+    }
+    
+    &.type-other {
+      background-color: #fafafa;
+      color: #757575;
+    }
+  }
+  
+  mat-dialog-actions {
+    padding: 8px 0;
+    margin-bottom: 0;
+  }
+} 

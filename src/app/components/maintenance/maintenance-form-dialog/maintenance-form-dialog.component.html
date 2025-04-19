@@ -1,0 +1,104 @@
+<div class="maintenance-form-dialog">
+  <h2 mat-dialog-title>{{isEditMode ? 'Chỉnh sửa công việc' : 'Thêm công việc mới'}}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Tiêu đề</mat-label>
+          <input matInput formControlName="title" placeholder="Nhập tiêu đề công việc">
+          <mat-error *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+            {{getFormControlError('title')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Mô tả</mat-label>
+          <textarea matInput formControlName="description" placeholder="Nhập mô tả chi tiết" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row cols-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Loại công việc</mat-label>
+          <mat-select formControlName="taskType">
+            <mat-option *ngFor="let type of typeLabels | keyvalue" [value]="type.key">
+              {{type.value}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('taskType')?.invalid && form.get('taskType')?.touched">
+            {{getFormControlError('taskType')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Vị trí</mat-label>
+          <input matInput formControlName="location" placeholder="Nhập vị trí thực hiện">
+          <mat-error *ngIf="form.get('location')?.invalid && form.get('location')?.touched">
+            {{getFormControlError('location')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row cols-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Ngày lên lịch</mat-label>
+          <input matInput [matDatepicker]="scheduledDatePicker" formControlName="scheduledDate">
+          <mat-datepicker-toggle matSuffix [for]="scheduledDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #scheduledDatePicker></mat-datepicker>
+          <mat-error *ngIf="form.get('scheduledDate')?.invalid && form.get('scheduledDate')?.touched">
+            {{getFormControlError('scheduledDate')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Trạng thái</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let status of statusLabels | keyvalue" [value]="status.key">
+              {{status.value}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('status')?.invalid && form.get('status')?.touched">
+            {{getFormControlError('status')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row cols-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Mức độ ưu tiên</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option *ngFor="let priority of priorityLabels | keyvalue" [value]="priority.key">
+              {{priority.value}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('priority')?.invalid && form.get('priority')?.touched">
+            {{getFormControlError('priority')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Người phụ trách</mat-label>
+          <input matInput formControlName="assignedTo" placeholder="Nhập tên người phụ trách">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Ghi chú</mat-label>
+          <textarea matInput formControlName="notes" placeholder="Nhập ghi chú bổ sung" rows="2"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    
+    <mat-dialog-actions class="action-buttons">
+      <button mat-button type="button" [disabled]="isSubmitting" (click)="cancel()">Hủy</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isSubmitting">
+        <mat-icon>save</mat-icon>
+        {{isEditMode ? 'Cập nhật' : 'Thêm mới'}}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div> 

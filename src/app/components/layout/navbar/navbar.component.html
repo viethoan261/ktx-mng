@@ -16,6 +16,10 @@
       <mat-icon matListItemIcon>apartment</mat-icon>
       <span matListItemTitle>Quản lý phòng</span>
     </a>
+    <a *ngIf="userRole === 'ADMIN'" mat-list-item routerLink="/maintenance" routerLinkActive="active">
+      <mat-icon matListItemIcon>build</mat-icon>
+      <span matListItemTitle>Quản lý bảo trì</span>
+    </a>
     <a *ngIf="userRole === 'ADMIN'" mat-list-item routerLink="/security" routerLinkActive="active">
       <mat-icon matListItemIcon>security</mat-icon>
       <span matListItemTitle>Quản lý an ninh</span>
