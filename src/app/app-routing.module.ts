@@ -6,6 +6,7 @@ import { AccountsComponent } from './components/accounts/accounts.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsComponent } from './components/students/students.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { SecurityComponent } from './components/security/security.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
@@ -34,6 +35,11 @@ const routes: Routes = [
       },
       { path: 'rooms', component: RoomsComponent },
       { path: 'students', component: StudentsComponent },
+      { 
+        path: 'security',
+        component: SecurityComponent,
+        canActivate: [adminGuard]
+      },
       { path: 'requests', component: RequestsComponent },
       { 
         path: 'notifications', 

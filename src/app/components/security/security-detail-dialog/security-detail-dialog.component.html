@@ -1,0 +1,70 @@
+<div class="detail-dialog-container">
+  <h2 mat-dialog-title>Chi tiết check-in</h2>
+  
+  <div class="mat-dialog-content">
+    <div class="detail-content">
+      <div class="detail-row">
+        <div class="label">Tên khách:</div>
+        <div class="value">{{data.visitorName}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Số điện thoại:</div>
+        <div class="value">{{data.phoneNumber}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Mã sinh viên:</div>
+        <div class="value">{{data.studentId === 0 ? 'Không có' : data.studentId}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Mục đích:</div>
+        <div class="value">{{data.purpose}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Ghi chú:</div>
+        <div class="value">{{data.notes || 'Không có ghi chú'}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Thời gian vào:</div>
+        <div class="value">{{formatDate(data.entryTime)}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Thời gian ra:</div>
+        <div class="value">
+          <span *ngIf="data.exitTime">{{formatDate(data.exitTime)}}</span>
+          <span *ngIf="!data.exitTime" class="active-status status-badge">Đang trong KTX</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Trạng thái:</div>
+        <div class="value">
+          <span class="status-badge" 
+                [class.active-status]="data.status === 'CHECKED_IN'"
+                [class.inactive-status]="data.status === 'CHECKED_OUT'">
+            {{data.status === 'CHECKED_IN' ? 'Đang trong KTX' : 'Đã ra ngoài'}}
+          </span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Ngày tạo:</div>
+        <div class="value">{{formatDate(data.createdDate)}}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="label">Ngày cập nhật:</div>
+        <div class="value">{{formatDate(data.modifiedDate)}}</div>
+      </div>
+    </div>
+  </div>
+  
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Đóng</button>
+  </div>
+</div> 

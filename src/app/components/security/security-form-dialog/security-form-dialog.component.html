@@ -1,0 +1,52 @@
+<div class="form-dialog-container">
+  <h2 mat-dialog-title>{{dialogTitle}}</h2>
+  
+  <div class="mat-dialog-content">
+    <form [formGroup]="securityForm">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tên người vào</mat-label>
+        <input matInput formControlName="visitorName" placeholder="Nhập tên người vào">
+        <mat-error *ngIf="securityForm.get('visitorName')?.hasError('required')">
+          Tên người vào là bắt buộc
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mã sinh viên (nếu có)</mat-label>
+        <input matInput formControlName="studentIdInput" placeholder="Nhập mã sinh viên">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput formControlName="phoneNumber" placeholder="Nhập số điện thoại">
+        <mat-error *ngIf="securityForm.get('phoneNumber')?.hasError('required')">
+          Số điện thoại là bắt buộc
+        </mat-error>
+        <mat-error *ngIf="securityForm.get('phoneNumber')?.hasError('pattern')">
+          Số điện thoại không hợp lệ (10 số)
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mục đích vào KTX</mat-label>
+        <input matInput formControlName="purpose" placeholder="Nhập mục đích vào KTX">
+        <mat-error *ngIf="securityForm.get('purpose')?.hasError('required')">
+          Mục đích là bắt buộc
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ghi chú</mat-label>
+        <textarea matInput formControlName="notes" placeholder="Nhập ghi chú (nếu có)" rows="3"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+  
+  <div mat-dialog-actions align="end">
+    <button mat-button [disabled]="isLoading" (click)="onCancel()">Hủy</button>
+    <button mat-raised-button color="primary" [disabled]="securityForm.invalid || isLoading" (click)="onSubmit()">
+      <mat-spinner diameter="20" *ngIf="isLoading" class="spinner-button"></mat-spinner>
+      <span *ngIf="!isLoading">{{isEditMode ? 'Cập nhật' : 'Lưu'}}</span>
+    </button>
+  </div>
+</div>

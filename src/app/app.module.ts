@@ -46,6 +46,8 @@ import { RequestsComponent, RequestDetailDialogComponent, RequestFormDialogCompo
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotificationDetailComponent } from './components/notifications/notification-detail/notification-detail.component';
+import { SecurityComponent } from './components/security/security.component';
+import { SecurityFormDialogComponent } from './components/security/security-form-dialog/security-form-dialog.component';
 
 // Custom overlay scroll strategy factory
 export function scrollStrategyFactory(overlay: Overlay) {
@@ -144,7 +146,9 @@ export class FixSelectPositionDirective implements AfterViewInit {
     ResponseDialogComponent,
     FixSelectPositionDirective,
     DashboardComponent,
-    NotificationDetailComponent
+    NotificationDetailComponent,
+    SecurityComponent,
+    SecurityFormDialogComponent
   ],
   imports: [
     BrowserModule,

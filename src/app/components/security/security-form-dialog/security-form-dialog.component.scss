@@ -1,0 +1,65 @@
+.form-dialog-container {
+  min-width: 400px;
+  max-width: 600px;
+  padding: 0 12px;
+}
+
+.mat-dialog-content {
+  padding-top: 10px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.spinner-button {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+// Đảm bảo input được hiển thị đúng
+input.mat-input-element, 
+textarea.mat-input-element {
+  padding: 8px 0;
+}
+
+// Đảm bảo các input không bị che phủ
+::ng-deep .mat-mdc-form-field-infix {
+  width: auto !important;
+  min-height: 48px;
+}
+
+// Thêm margin cho dialog actions
+[mat-dialog-actions] {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+
+// Đảm bảo nút spinner hiển thị đúng
+button .mat-spinner {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.student-search {
+  width: 100%;
+  border: none;
+  outline: none;
+  height: 36px;
+}
+
+::ng-deep .mat-option-text {
+  display: flex !important;
+  align-items: center;
+}
+
+::ng-deep .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 16px;
+}
