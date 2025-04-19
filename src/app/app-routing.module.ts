@@ -5,14 +5,15 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsComponent } from './components/students/students.component';
-import { RequestsComponent } from './components/requests/requests.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { adminGuard } from './guards/admin.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { RequestsComponent } from './components/requests/requests.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { 
@@ -26,10 +27,18 @@ const routes: Routes = [
     canActivate: [authGuard], // Sử dụng functional guard
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'accounts', component: AccountsComponent, canActivate: [adminGuard] },
-      { path: 'rooms', component: RoomsComponent, canActivate: [adminGuard] },
+      { 
+        path: 'accounts', 
+        component: AccountsComponent,
+        canActivate: [adminGuard]
+      },
+      { path: 'rooms', component: RoomsComponent },
       { path: 'students', component: StudentsComponent },
       { path: 'requests', component: RequestsComponent },
+      { 
+        path: 'notifications', 
+        component: NotificationsComponent
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

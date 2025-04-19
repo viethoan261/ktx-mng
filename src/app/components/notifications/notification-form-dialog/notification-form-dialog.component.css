@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.notification-dialog-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+h2[mat-dialog-title] {
+  margin: 0;
+  padding: 16px 24px;
+  color: #333;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  flex-shrink: 0;
+}
+
+.form-field {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.notification-dialog-content {
+  padding: 20px 24px !important;
+  margin: 0 !important;
+  overflow-y: auto !important;
+  flex: 1;
+  max-height: unset !important; /* Let the container handle scrolling */
+}
+
+.notification-dialog-actions {
+  padding: 16px 24px !important;
+  margin: 0 !important;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  position: relative !important;
+  z-index: 100 !important;
+  flex-shrink: 0;
+  background-color: white;
+}
+
+.action-button {
+  min-width: 100px;
+  position: relative !important;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+}
+
+.button-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Custom scrollbar */
+.notification-dialog-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.notification-dialog-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.notification-dialog-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.notification-dialog-content::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Fix for datepicker in dialog */
+::ng-deep .mat-datepicker-content {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 99999 !important;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+::ng-deep .notification-datepicker-popup {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 99999 !important;
+}
+
+.clickable-icon {
+  cursor: pointer;
+  color: #3f51b5;
+  margin-right: 0;
+}
+
+.clickable-icon:hover {
+  color: #303f9f;
+} 

@@ -1,0 +1,100 @@
+<div class="notifications-container">
+  <div class="header">
+    <h1 class="mat-h1">Quản lý thông báo và thông tin</h1>
+    <button mat-raised-button color="primary" (click)="onCreate()" *ngIf="userRole === 'ADMIN'">
+      <mat-icon>add</mat-icon>
+      Thêm thông báo mới
+    </button>
+  </div>
+
+  <!-- Filter field -->
+  <mat-form-field class="filter-field">
+    <mat-label>Tìm kiếm</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Nhập từ khóa">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Table container -->
+  <div class="table-container" [class.loading]="isLoading">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu đề </th>
+        <td mat-cell *matCellDef="let notification"> {{notification.title}} </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Loại thông báo </th>
+        <td mat-cell *matCellDef="let notification"> 
+          <span class="notification-badge" 
+                [class.internal-type]="notification.type === 'internal'" 
+                [class.emergency-type]="notification.type === 'emergency'">
+            {{notification.type === 'internal' ? 'Thông báo nội bộ' : 'Thông báo khẩn cấp'}}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái </th>
+        <td mat-cell *matCellDef="let notification">
+          <span class="status-badge" 
+                [class.active-status]="notification.status === 'active'" 
+                [class.inactive-status]="notification.status === 'inactive'">
+            {{notification.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Publish Date Column -->
+      <ng-container matColumnDef="publishDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày phát hành </th>
+        <td mat-cell *matCellDef="let notification"> {{notification.publishDate | date:'dd/MM/yyyy'}} </td>
+      </ng-container>
+
+      <!-- Expiry Date Column -->
+      <ng-container matColumnDef="expiryDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày hết hạn </th>
+        <td mat-cell *matCellDef="let notification"> {{notification.expiryDate | date:'dd/MM/yyyy'}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Thao tác </th>
+        <td mat-cell *matCellDef="let notification">
+          <div class="action-buttons">
+            <button mat-icon-button class="view-btn" (click)="onViewDetail(notification)" matTooltip="Xem chi tiết">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button class="edit-btn" (click)="onEdit(notification)" 
+                    matTooltip="Chỉnh sửa" *ngIf="userRole === 'ADMIN'">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="delete-btn" (click)="onDelete(notification)" 
+                    matTooltip="Xóa" *ngIf="userRole === 'ADMIN'">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Row setup -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- No data row -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="6">Không tìm thấy dữ liệu</td>
+      </tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Chọn trang"></mat-paginator>
+  </div>
+</div>

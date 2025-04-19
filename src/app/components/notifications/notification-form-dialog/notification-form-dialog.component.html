@@ -1,0 +1,85 @@
+<div class="notification-dialog-container">
+  <h2 mat-dialog-title>{{ isEditMode ? 'Chỉnh sửa thông báo' : 'Tạo thông báo mới' }}</h2>
+
+  <mat-dialog-content class="notification-dialog-content">
+    <form [formGroup]="notificationForm">
+      <div class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Tiêu đề</mat-label>
+          <input matInput formControlName="title">
+          <mat-error *ngIf="notificationForm.get('title')?.hasError('required')">
+            Tiêu đề là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Nội dung</mat-label>
+          <textarea matInput formControlName="content" rows="4"></textarea>
+          <mat-error *ngIf="notificationForm.get('content')?.hasError('required')">
+            Nội dung là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Loại thông báo</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="internal">Thông báo nội bộ</mat-option>
+            <mat-option value="emergency">Thông báo khẩn cấp</mat-option>
+          </mat-select>
+          <mat-error *ngIf="notificationForm.get('type')?.hasError('required')">
+            Loại thông báo là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Trạng thái</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="active">Hoạt động</mat-option>
+            <mat-option value="inactive">Không hoạt động</mat-option>
+          </mat-select>
+          <mat-error *ngIf="notificationForm.get('status')?.hasError('required')">
+            Trạng thái là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Ngày phát hành</mat-label>
+          <input matInput readonly [matDatepicker]="publishPicker" formControlName="publishDate">
+          <mat-datepicker-toggle matSuffix [for]="publishPicker"></mat-datepicker-toggle>
+          <mat-datepicker #publishPicker></mat-datepicker>
+          <mat-error *ngIf="notificationForm.get('publishDate')?.hasError('required')">
+            Ngày phát hành là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Ngày hết hạn</mat-label>
+          <input matInput readonly [matDatepicker]="expiryPicker" formControlName="expiryDate">
+          <mat-datepicker-toggle matSuffix [for]="expiryPicker"></mat-datepicker-toggle>
+          <mat-datepicker #expiryPicker></mat-datepicker>
+          <mat-error *ngIf="notificationForm.get('expiryDate')?.hasError('required')">
+            Ngày hết hạn là bắt buộc
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="notification-dialog-actions">
+    <button mat-button (click)="onCancel()" class="action-button">Hủy</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!notificationForm.valid || isLoading" class="action-button">
+      <mat-spinner *ngIf="isLoading" diameter="20" color="accent" class="button-spinner"></mat-spinner>
+      <span *ngIf="!isLoading">{{ isEditMode ? 'Cập nhật' : 'Tạo mới' }}</span>
+    </button>
+  </mat-dialog-actions>
+</div>

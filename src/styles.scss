@@ -6,6 +6,7 @@ html, body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: auto !important;
 }
 
 * {
@@ -183,6 +184,15 @@ html, body {
   padding: 0 !important;
   border-radius: 8px !important;
   overflow: hidden !important;
+  z-index: 1002 !important;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.mat-dialog-content {
+  max-height: 65vh !important;
+  overflow-y: auto !important;
 }
 
 /* Custom Dialog Container - Fix accessibility issues */
@@ -203,14 +213,7 @@ html, body {
 
 // Fix for accessibility issue with dialogs
 .cdk-overlay-container {
-  // Ensure overlay container is outside the app-root scope
-  z-index: 1000;
-  position: fixed !important;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+  z-index: 1000 !important; /* Default z-index for all overlays */
 }
 
 .cdk-global-overlay-wrapper {
@@ -422,4 +425,43 @@ mat-option[disabled] {
   color: #f44336 !important;
   font-style: italic !important;
   opacity: 1 !important;
+}
+
+/* Fix for datepicker in dialogs - simpler approach */
+.cdk-overlay-container {
+  z-index: 1000 !important; /* Default z-index for all overlays */
+}
+
+.mat-datepicker-content {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Make sure the datepicker backdrop doesn't block dialog interactions */
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing + .cdk-global-overlay-wrapper .mat-dialog-container {
+  pointer-events: auto !important;
+  z-index: 1002 !important;
+}
+
+/* Ensure dialog content is on top */
+.mat-dialog-container {
+  z-index: 1002 !important;
+}
+
+/* Ensure dialog actions are clickable */
+.mat-dialog-actions {
+  position: relative;
+  z-index: 1100 !important;
+  pointer-events: auto !important;
+}
+
+/* Hide the body scrollbar when a dialog is open */
+body.cdk-global-scrollblock {
+  overflow: hidden !important;
+}
+
+/* Style for buttons to ensure they're clickable */
+button.mat-button, button.mat-raised-button {
+  position: relative !important;
+  z-index: 1200 !important;
+  pointer-events: auto !important;
 }

@@ -1,4 +1,45 @@
 <div class="dashboard-container">
   <h1 class="mat-h1">Welcome to Dashboard</h1>
-  <p>This is the dashboard page. Content will be added here in future updates.</p>
+  
+  <!-- Recent Notifications Section -->
+  <div class="notifications-section">
+    <div class="section-header">
+      <h2>Thông báo mới nhất</h2>
+      <button mat-icon-button color="primary" (click)="refreshNotifications()" matTooltip="Làm mới">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    
+    <!-- Loading indicator -->
+    <div class="loading-container" *ngIf="isLoading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    
+    <mat-card class="notification-card" *ngFor="let notification of recentNotifications" 
+              [ngClass]="{'emergency-notification': notification.type === 'emergency'}">
+      <mat-card-header>
+        <mat-icon mat-card-avatar 
+                 [ngClass]="{'internal-icon': notification.type === 'internal', 'emergency-icon': notification.type === 'emergency'}"
+                 [color]="notification.type === 'emergency' ? 'warn' : 'primary'">
+          {{notification.type === 'internal' ? 'announcement' : 'warning'}}
+        </mat-icon>
+        <mat-card-title>{{ notification.title }}</mat-card-title>
+        <mat-card-subtitle>
+          <span class="notification-date">{{ notification.publishDate | date:'dd/MM/yyyy' }}</span>
+          <span class="notification-badge" 
+                [ngClass]="{'internal-type': notification.type === 'internal', 'emergency-type': notification.type === 'emergency'}">
+            {{notification.type === 'internal' ? 'Thông báo nội bộ' : 'Thông báo khẩn cấp'}}
+          </span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ notification.content }}</p>
+      </mat-card-content>
+    </mat-card>
+    
+    <div *ngIf="!isLoading && recentNotifications.length === 0" class="no-notifications">
+      <mat-icon color="disabled">notifications_off</mat-icon>
+      <p>Hiện tại không có thông báo nào.</p>
+    </div>
+  </div>
 </div>

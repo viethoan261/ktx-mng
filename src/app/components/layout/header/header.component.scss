@@ -13,7 +13,7 @@ mat-toolbar {
 }
 
 .logo {
-  height: 30px;
+  height: 40px;
   margin-right: 16px;
 }
 
@@ -22,6 +22,7 @@ mat-toolbar {
   align-items: center;
   gap: 8px;
   color: #000;
+  margin-left: 8px;
 
   mat-icon {
     margin-right: 4px;
@@ -29,37 +30,218 @@ mat-toolbar {
   }
 }
 
-::ng-deep .mat-mdc-menu-panel {
-  z-index: 9999 !important;
+.notification-dropdown {
+  position: relative;
+  margin-right: 8px;
 }
 
-::ng-deep .mat-mdc-menu-content {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 0;
-}
-
-::ng-deep .mat-mdc-menu-item {
-  color: #000;
-  height: 48px;
-  line-height: 48px;
-  
-  mat-icon {
-    margin-right: 8px;
-    color: #000;
-  }
-}
-
-.account-menu {
-  background-color: #fff;
-}
-
-.menu-item {
-  color: #000;
+.notification-button {
+  position: relative;
   
   mat-icon {
     color: #000;
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
   }
+}
+
+/* Badge styling */
+::ng-deep .notification-button .mat-badge-content {
+  font-weight: 500;
+  font-size: 12px;
+  top: -8px !important;
+  right: -8px !important;
+}
+
+/* Tooltip styling */
+::ng-deep .custom-tooltip {
+  background-color: rgba(97, 97, 97, 0.9);
+  font-size: 12px;
+  margin: 0 !important;
+  position: relative !important;
+  overflow: visible !important;
+  
+  &.mat-mdc-tooltip {
+    position: fixed !important;
+    max-width: none !important;
+  }
+}
+
+/* Fix the tooltip position */
+::ng-deep .cdk-overlay-container {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+}
+
+/* Custom notification panel */
+.notification-panel {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: 350px;
+  max-width: calc(100vw - 20px);
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 9999;
+  display: none;
+  overflow: hidden;
+}
+
+.show-panel {
+  display: block;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .notification-actions {
+    display: flex;
+    gap: 8px;
+    
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.04);
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      min-width: unset;
+      padding: 0;
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        color: rgba(0, 0, 0, 0.7);
+        margin: 0;
+      }
+    }
+  }
+}
+
+.notification-list {
+  max-height: 360px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.notification-item {
+  width: 100%;
+  height: auto;
+  line-height: 1.5;
+  padding: 8px 16px;
+  white-space: normal;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  background-color: #fff;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  &.read {
+    background-color: #f0f0f0;
+    
+    .notification-title {
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .mat-icon {
+      opacity: 0.7;
+    }
+  }
+}
+
+.notification-type-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #3f51b5;
+  
+  &.warning-type {
+    background-color: #f44336;
+  }
+}
+
+.notification-icon {
+  display: flex;
+  flex-shrink: 0;
+  margin-left: 6px;
+  margin-right: 12px;
+  
+  .mat-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.notification-item-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.notification-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.notification-date {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.no-notifications {
+  padding: 16px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.notification-footer {
+  padding: 8px;
+  display: flex;
+  justify-content: center;
 }
 
 span {

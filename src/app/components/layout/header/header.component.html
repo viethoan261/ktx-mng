@@ -2,6 +2,72 @@
   <img src="assets/images/logo.png" alt="Logo" class="logo">
   <span>Hệ thống quản lý ký túc xá</span>
   <span class="spacer"></span>
+  
+  <!-- Notification dropdown container -->
+  <div class="notification-dropdown" *ngIf="userRole !== 'ADMIN'">
+    <!-- Notification button -->
+    <button mat-icon-button (click)="toggleNotificationPanel()" class="notification-button">
+      <mat-icon [matBadge]="unreadCount" [matBadgeHidden]="unreadCount === 0" matBadgeColor="accent" matBadgeSize="small" matBadgePosition="above after">notifications</mat-icon>
+    </button>
+    
+    <!-- Custom notification panel -->
+    <div class="notification-panel" [class.show-panel]="showNotificationPanel">
+      <div class="notification-header">
+        <h3>Thông báo</h3>
+        <div class="notification-actions">
+          <button mat-icon-button class="action-button" 
+                  *ngIf="unreadCount > 0" 
+                  (click)="markAllAsRead(); $event.stopPropagation()">
+            <mat-icon>done_all</mat-icon>
+          </button>
+          <button mat-icon-button class="action-button" 
+                  (click)="refreshNotifications(); $event.stopPropagation()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </div>
+      
+      <mat-divider></mat-divider>
+      
+      <div class="notification-list">
+        <!-- Hiển thị từng thông báo -->
+        <div class="notification-item" *ngFor="let notification of notifications" 
+              [class.read]="notification.isRead"
+              (click)="openNotificationDetail(notification)">
+          <!-- Indicator phân loại thông báo -->
+          <div class="notification-type-indicator" 
+               [class.warning-type]="notification.type !== 'internal'">
+          </div>
+          
+          <!-- Icon thông báo -->
+          <div class="notification-icon">
+            <mat-icon [color]="notification.type === 'emergency' ? 'warn' : 'primary'">
+              {{notification.type === 'internal' ? 'announcement' : 'warning'}}
+            </mat-icon>
+          </div>
+          
+          <!-- Nội dung thông báo -->
+          <div class="notification-item-content">
+            <span class="notification-title" [title]="notification.title">{{notification.title}}</span>
+            <span class="notification-date">{{notification.publishDate | date:'dd/MM/yyyy'}}</span>
+          </div>
+        </div>
+        
+        <div *ngIf="notifications.length === 0" class="no-notifications">
+          <p>Không có thông báo nào</p>
+        </div>
+      </div>
+      
+      <mat-divider></mat-divider>
+      
+      <div class="notification-footer">
+        <button mat-button (click)="viewAllNotifications()" color="primary">
+          Xem tất cả thông báo
+        </button>
+      </div>
+    </div>
+  </div>
+  
   <button mat-button (click)="logout()" class="account-button">
     <mat-icon>exit_to_app</mat-icon>
     <span>Logout</span>

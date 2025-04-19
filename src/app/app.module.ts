@@ -20,6 +20,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
 import { ConfirmDialogModule } from './components/common/confirm-dialog/confirm-dialog.module';
 import { EmptyStateModule } from './components/common/empty-state/empty-state.module';
 import { OverlayModule, OverlayContainer, FullscreenOverlayContainer, Overlay, ScrollStrategyOptions } from '@angular/cdk/overlay';
@@ -35,12 +38,14 @@ import { AccountFormDialogComponent } from './components/accounts/account-form-d
 import { RoomFormDialogComponent } from './components/rooms/room-form-dialog/room-form-dialog.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { StudentsModule } from './components/students/students.module';
+import { NotificationsModule } from './components/notifications/notifications.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RequestsComponent, RequestDetailDialogComponent, RequestFormDialogComponent, ResponseDialogComponent } from './components/requests/requests.component';
 
 // Import interceptor
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NotificationDetailComponent } from './components/notifications/notification-detail/notification-detail.component';
 
 // Custom overlay scroll strategy factory
 export function scrollStrategyFactory(overlay: Overlay) {
@@ -138,7 +143,8 @@ export class FixSelectPositionDirective implements AfterViewInit {
     RequestFormDialogComponent,
     ResponseDialogComponent,
     FixSelectPositionDirective,
-    DashboardComponent
+    DashboardComponent,
+    NotificationDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -160,11 +166,15 @@ export class FixSelectPositionDirective implements AfterViewInit {
     MatProgressSpinnerModule,
     MatSelectModule,
     StudentsModule,
+    NotificationsModule,
     MatSnackBarModule,
     MatPaginatorModule,
     MatTooltipModule,
     MatRippleModule,
     MatSortModule,
+    MatCardModule,
+    MatBadgeModule,
+    MatDividerModule,
     ConfirmDialogModule,
     EmptyStateModule,
     OverlayModule
