@@ -1,0 +1,153 @@
+.payment-result-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.result-card {
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  
+  p {
+    margin-top: 20px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.success-container, .error-container, .fallback-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.status-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  
+  mat-icon {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
+  
+  &.success {
+    background-color: rgba(76, 175, 80, 0.1);
+    
+    mat-icon {
+      color: #4CAF50;
+    }
+  }
+  
+  &.error {
+    background-color: rgba(244, 67, 54, 0.1);
+    
+    mat-icon {
+      color: #F44336;
+    }
+  }
+}
+
+.order-status-update {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+  font-size: 14px;
+  
+  mat-icon {
+    margin-right: 8px;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
+.manual-check-prompt {
+  margin: 20px 0;
+}
+
+.manual-check-form {
+  width: 100%;
+  margin: 20px 0;
+  
+  .order-check-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    
+    .order-id-field {
+      width: 100%;
+    }
+    
+    button {
+      align-self: flex-end;
+    }
+  }
+}
+
+h2 {
+  margin: 0 0 20px;
+  font-weight: 500;
+}
+
+.divider {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.transaction-details {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.label {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.value {
+  font-weight: 500;
+}
+
+.error-message {
+  color: #F44336;
+  margin-top: 0;
+  font-size: 16px;
+} 

@@ -10,6 +10,7 @@ import { SecurityComponent } from './components/security/security.component';
 import { MaintenanceComponent } from './components/maintenance/maintenance.component';
 import { PricesComponent } from './components/prices/prices.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { PaymentResultComponent } from './components/payment-result/payment-result.component';
 
 // Import functional guards
 import { authGuard } from './guards/auth.guard';
@@ -57,6 +58,7 @@ const routes: Routes = [
         path: 'orders',
         component: OrdersComponent
       },
+      { path: 'payment-result', component: PaymentResultComponent },
       { path: 'requests', component: RequestsComponent },
       { 
         path: 'notifications', 

@@ -7,6 +7,8 @@ import { OrderService } from '../../services/order.service';
 import { RoomService } from '../../services/room.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { PaymentService, CreatePaymentRequest } from '../../services/payment.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -40,7 +42,9 @@ export class OrdersComponent implements OnInit {
     private roomService: RoomService,
     private orderService: OrderService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private paymentService: PaymentService,
+    private router: Router
   ) {
     this.orderForm = this.fb.group({
       orders: this.fb.array([])
@@ -252,10 +256,19 @@ export class OrdersComponent implements OnInit {
     }
 
     const searchText = query.toLowerCase().trim();
-    this.filteredOrders = this.orders.filter(order => 
-      order.studentName?.toLowerCase().includes(searchText) || 
-      order.roomNumber?.toLowerCase().includes(searchText)
-    );
+    
+    if (this.isAdmin()) {
+      // Tìm kiếm theo tên sinh viên hoặc phòng cho ADMIN
+      this.filteredOrders = this.orders.filter(order => 
+        order.studentName?.toLowerCase().includes(searchText) || 
+        order.roomNumber?.toLowerCase().includes(searchText)
+      );
+    } else if (this.isStudent()) {
+      // Tìm kiếm theo mã hóa đơn cho STUDENT
+      this.filteredOrders = this.orders.filter(order => 
+        order.id.toString().includes(searchText)
+      );
+    }
   }
 
   clearSearch(): void {
@@ -368,7 +381,75 @@ export class OrdersComponent implements OnInit {
         }
       });
     } else {
+      // For student/non-admin: use VNPay online payment
+      const orderToUpdate = this.orders.find(order => order.id === orderId);
+      
+      if (!orderToUpdate) {
+        this.snackBar.open('Không tìm thấy thông tin hóa đơn', 'Đóng', { duration: 3000 });
+        this.updatingOrderId = null;
+        return;
+      }
 
+      const paymentRequest: CreatePaymentRequest = {
+        Amount: orderToUpdate.total,
+        OrderDescription: `Thanh toán hóa đơn KTX #${orderToUpdate.id}`,
+        OrderType: 'Dormitory',
+        OrderId: orderToUpdate.id.toString(),
+        Name: orderToUpdate.studentName,
+        ReturnUrl: `${window.location.origin}/payment-result`
+      };
+
+      this.paymentService.createPayment(paymentRequest).subscribe({
+        next: (response) => {
+          // Redirect to the payment URL returned from VNPay
+          if (response && response.paymentUrl) {
+            try {
+              // Try to open in the same tab first
+              window.location.href = response.paymentUrl;
+              
+              // Set a timeout to check if the page didn't navigate away
+              // (this could happen if there's a popup blocker or other issue)
+              setTimeout(() => {
+                // If we're still here after timeout, try to open in a new tab
+                window.open(response.paymentUrl, '_blank');
+                
+                // Also provide a manual link option
+                this.snackBar.open(
+                  'Có vấn đề khi chuyển hướng đến trang thanh toán. Vui lòng thử lại hoặc nhấp vào liên kết.', 
+                  'Mở trang thanh toán', 
+                  { 
+                    duration: 10000,
+                    panelClass: ['payment-snackbar']
+                  }
+                ).onAction().subscribe(() => {
+                  window.open(response.paymentUrl, '_blank');
+                });
+              }, 1000);
+            } catch (e) {
+              // If redirection fails, offer a fallback option
+              console.error('Failed to redirect to payment page:', e);
+              this.snackBar.open(
+                'Không thể tự động chuyển hướng đến trang thanh toán.', 
+                'Mở trang thanh toán', 
+                { 
+                  duration: 10000,
+                  panelClass: ['payment-snackbar']
+                }
+              ).onAction().subscribe(() => {
+                window.open(response.paymentUrl, '_blank');
+              });
+            }
+          } else {
+            this.snackBar.open('Không thể khởi tạo thanh toán', 'Đóng', { duration: 3000 });
+          }
+          this.updatingOrderId = null;
+        },
+        error: (error) => {
+          console.error('Error creating payment', error);
+          this.snackBar.open('Không thể khởi tạo thanh toán', 'Đóng', { duration: 3000 });
+          this.updatingOrderId = null;
+        }
+      });
     } 
   }
 

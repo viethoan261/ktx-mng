@@ -1,25 +1,3 @@
-<style>
-  .month-filter-container {
-    margin-bottom: 15px;
-  }
-  
-  .month-filter {
-    width: 200px;
-  }
-  
-  .search-field {
-    width: 400px;
-  }
-  
-  @media (min-width: 768px) {
-    .month-filter-container,
-    .search-container {
-      display: inline-block;
-      margin-right: 15px;
-    }
-  }
-</style>
-
 <div class="container">
   <h1 class="page-title">Quản Lý Hóa Đơn</h1>
 
@@ -52,6 +30,18 @@
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Tìm kiếm theo tên sinh viên hoặc phòng</mat-label>
           <input matInput [(ngModel)]="searchQuery" (input)="onSearchChange($event)">
+          <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Search Field - Only for STUDENT -->
+      <div class="search-container" *ngIf="userRole === 'STUDENT'">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Tìm kiếm theo mã hóa đơn</mat-label>
+          <input matInput [(ngModel)]="searchQuery" (input)="onSearchChange($event)" type="number" placeholder="Nhập mã hóa đơn">
           <button *ngIf="searchQuery" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
             <mat-icon>close</mat-icon>
           </button>
@@ -195,38 +185,40 @@
 
       <div *ngIf="!loading" [class.form-disabled]="hasExistingOrders">
         <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-          <table class="room-table mat-elevation-z2" *ngIf="rooms.length > 0">
-            <thead>
-              <tr>
-                <th>Phòng</th>
-                <th>Số Điện (kWh)</th>
-                <th>Số Nước (m³)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let orderControl of ordersArray.controls; let i = index">
-                <ng-container [formGroup]="getFormGroup(orderControl)">
-                  <td>{{ orderControl.get('roomName')?.value }}</td>
-                  <td>
-                    <mat-form-field appearance="outline">
-                      <input matInput type="number" formControlName="electricNumberPerMonth" min="0" [disabled]="hasExistingOrders">
-                      <mat-error *ngIf="orderControl.get('electricNumberPerMonth')?.invalid">
-                        Số điện phải lớn hơn hoặc bằng 0
-                      </mat-error>
-                    </mat-form-field>
-                  </td>
-                  <td>
-                    <mat-form-field appearance="outline">
-                      <input matInput type="number" formControlName="waterNumberPerMonth" min="0" [disabled]="hasExistingOrders">
-                      <mat-error *ngIf="orderControl.get('waterNumberPerMonth')?.invalid">
-                        Số nước phải lớn hơn hoặc bằng 0
-                      </mat-error>
-                    </mat-form-field>
-                  </td>
-                </ng-container>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="room-table mat-elevation-z2" *ngIf="rooms.length > 0">
+              <thead>
+                <tr>
+                  <th>Phòng</th>
+                  <th>Số Điện (kWh)</th>
+                  <th>Số Nước (m³)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orderControl of ordersArray.controls; let i = index">
+                  <ng-container [formGroup]="getFormGroup(orderControl)">
+                    <td>{{ orderControl.get('roomName')?.value }}</td>
+                    <td>
+                      <mat-form-field appearance="outline">
+                        <input matInput type="number" formControlName="electricNumberPerMonth" min="0" [disabled]="hasExistingOrders">
+                        <mat-error *ngIf="orderControl.get('electricNumberPerMonth')?.invalid">
+                          Số điện phải lớn hơn hoặc bằng 0
+                        </mat-error>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline">
+                        <input matInput type="number" formControlName="waterNumberPerMonth" min="0" [disabled]="hasExistingOrders">
+                        <mat-error *ngIf="orderControl.get('waterNumberPerMonth')?.invalid">
+                          Số nước phải lớn hơn hoặc bằng 0
+                        </mat-error>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div *ngIf="rooms.length === 0" class="no-rooms">
             <p>Không có phòng nào để tạo hóa đơn</p>

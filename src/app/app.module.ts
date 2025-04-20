@@ -44,6 +44,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RequestsComponent, RequestDetailDialogComponent, RequestFormDialogComponent, ResponseDialogComponent } from './components/requests/requests.component';
 import { PricesComponent } from './components/prices/prices.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { PaymentResultComponent } from './components/payment-result/payment-result.component';
 
 // Import interceptor
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -153,7 +154,8 @@ export class FixSelectPositionDirective implements AfterViewInit {
     SecurityComponent,
     SecurityFormDialogComponent,
     PricesComponent,
-    OrdersComponent
+    OrdersComponent,
+    PaymentResultComponent
   ],
   imports: [
     BrowserModule,

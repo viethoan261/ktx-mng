@@ -465,3 +465,51 @@ button.mat-button, button.mat-raised-button {
   z-index: 1200 !important;
   pointer-events: auto !important;
 }
+
+// Add this at the end of the file or in an appropriate section for snackbar styling
+
+.payment-snackbar {
+  .mat-simple-snackbar {
+    align-items: center;
+  }
+  
+  .mat-simple-snackbar-action {
+    color: #4CAF50;
+    font-weight: 500;
+  }
+}
+
+// Sửa vấn đề scroll trên toàn bộ ứng dụng
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+// Đảm bảo mat-card không tạo scroll
+.mat-card {
+  overflow: visible !important;
+}
+
+.mat-card-content {
+  overflow: visible !important;
+}
+
+// Ngăn chặn nhiều thanh cuộn trong bảng
+.table-responsive, .table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+// Đảm bảo các container chính kiểm soát scroll
+.container, .page-container, .content-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+// Ẩn thanh cuộn ngang cho toàn bộ ứng dụng
+html {
+  overflow-x: hidden;
+}

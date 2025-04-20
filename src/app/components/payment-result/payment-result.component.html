@@ -1,0 +1,130 @@
+<div class="payment-result-container">
+  <mat-card class="result-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Kết quả thanh toán</h1>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Đang xử lý kết quả thanh toán...</p>
+      </div>
+
+      <div *ngIf="!loading">
+        <!-- Fallback mode when no params received -->
+        <div *ngIf="fallbackMode" class="fallback-container">
+          <div class="status-icon error">
+            <mat-icon>sync_problem</mat-icon>
+          </div>
+          <h2>Có vấn đề khi xử lý kết quả thanh toán</h2>
+          <p class="error-message">{{ errorMessage }}</p>
+          
+          <div *ngIf="!manualChecking" class="manual-check-prompt">
+            <button mat-raised-button color="primary" (click)="showManualOrderCheck()">
+              <mat-icon>search</mat-icon>
+              Kiểm tra hóa đơn thủ công
+            </button>
+          </div>
+          
+          <div *ngIf="manualChecking" class="manual-check-form">
+            <form (submit)="checkOrderById($event)" class="order-check-form">
+              <mat-form-field appearance="outline" class="order-id-field">
+                <mat-label>Nhập mã hóa đơn</mat-label>
+                <input matInput id="manualOrderId" type="text" placeholder="Ví dụ: 123">
+                <mat-hint>Nhập mã số hóa đơn của bạn</mat-hint>
+              </mat-form-field>
+              <button mat-raised-button color="primary" type="submit">
+                <mat-icon>search</mat-icon>
+                Kiểm tra
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Success result -->
+        <div *ngIf="success && !fallbackMode" class="success-container">
+          <div class="status-icon success">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <h2>Thanh toán thành công</h2>
+          
+          <div class="order-status-update" *ngIf="orderUpdated">
+            <mat-icon>update</mat-icon> Trạng thái hóa đơn đã được cập nhật
+          </div>
+
+          <mat-divider class="divider"></mat-divider>
+
+          <div class="transaction-details" *ngIf="transactionStatus">
+            <div class="detail-row">
+              <span class="label">Mã hóa đơn:</span>
+              <span class="value">{{ transactionStatus.orderId }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Mã giao dịch:</span>
+              <span class="value">{{ transactionStatus.transactionId || vnpParams['vnp_TransactionNo'] }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Mã ngân hàng:</span>
+              <span class="value">{{ vnpParams['vnp_BankCode'] || 'N/A' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Số tiền:</span>
+              <span class="value">{{ transactionStatus?.amount ? formatCurrency(transactionStatus.amount) : (vnpParams['vnp_Amount'] ? formatCurrency(+vnpParams['vnp_Amount']/100) : 'N/A') }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Nội dung:</span>
+              <span class="value">{{ vnpParams['vnp_OrderInfo'] || 'Thanh toán hóa đơn KTX' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Thời gian:</span>
+              <span class="value">{{ transactionStatus?.transactionDate ? formatDate(transactionStatus.transactionDate) : 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error result -->
+        <div *ngIf="!success && !fallbackMode" class="error-container">
+          <div class="status-icon error">
+            <mat-icon>error</mat-icon>
+          </div>
+          <h2>Thanh toán không thành công</h2>
+          <p class="error-message">{{ errorMessage }}</p>
+          
+          <mat-divider class="divider"></mat-divider>
+          
+          <div class="transaction-details" *ngIf="vnpParams['vnp_TxnRef']">
+            <div class="detail-row">
+              <span class="label">Mã hóa đơn:</span>
+              <span class="value">{{ vnpParams['vnp_TxnRef'] }}</span>
+            </div>
+            <div class="detail-row" *ngIf="vnpParams['vnp_TransactionNo']">
+              <span class="label">Mã giao dịch:</span>
+              <span class="value">{{ vnpParams['vnp_TransactionNo'] }}</span>
+            </div>
+            <div class="detail-row" *ngIf="vnpParams['vnp_BankCode']">
+              <span class="label">Mã ngân hàng:</span>
+              <span class="value">{{ vnpParams['vnp_BankCode'] }}</span>
+            </div>
+            <div class="detail-row" *ngIf="vnpParams['vnp_OrderInfo']">
+              <span class="label">Nội dung:</span>
+              <span class="value">{{ vnpParams['vnp_OrderInfo'] }}</span>
+            </div>
+            <div class="detail-row" *ngIf="vnpParams['vnp_ResponseCode']">
+              <span class="label">Mã lỗi:</span>
+              <span class="value">{{ vnpParams['vnp_ResponseCode'] }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Quay lại danh sách hóa đơn
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div> 
