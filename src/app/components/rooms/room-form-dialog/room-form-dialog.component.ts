@@ -33,7 +33,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
     
     // Nếu đang chỉnh sửa và có students trong phòng
     if (this.isEditMode && this.data.room?.students && this.data.room.students.length > 0) {
-      console.log('Constructor - Room students:', this.data.room.students);
       // Khởi tạo mảng selectedStudents ngay từ đầu
       this.selectedStudents = [...this.data.room.students];
     }
@@ -48,7 +47,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
     // Thêm check để đảm bảo cập nhật selectedStudents sau khi component đã được khởi tạo
     setTimeout(() => {
       if (this.isEditMode && this.selectedStudents.length === 0 && this.data.room?.students && this.data.room.students.length > 0) {
-        console.log('ngAfterViewInit - Setting selectedStudents from room.students:', this.data.room.students);
         // Cập nhật selectedStudents từ students của phòng
         this.selectedStudents = [...this.data.room.students];
         
@@ -67,7 +65,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (allStudents) => {
-          console.log('Tất cả sinh viên:', allStudents);
           // Lưu tất cả sinh viên
           this.allAvailableStudents = [...allStudents];
           
@@ -75,7 +72,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
           const unassignedStudents = allStudents.filter(student => !student.roomNumber);
           
           if (this.isEditMode && this.data.room?.students && this.data.room.students.length > 0) {
-            console.log('loadStudents - Room students:', this.data.room.students);
             
             // Sử dụng students từ dữ liệu phòng
             const roomStudents = this.data.room.students;
@@ -94,12 +90,10 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
             
             // Thiết lập danh sách sinh viên đã chọn
             this.selectedStudents = [...roomStudents];
-            console.log('Sinh viên đã chọn từ room.students:', this.selectedStudents);
             
             // Cập nhật giá trị form với ID của sinh viên
             setTimeout(() => {
               const studentIds = roomStudents.map(student => student.id);
-              console.log('Cập nhật giá trị form studentIds:', studentIds);
               this.roomForm.get('studentIds')?.setValue(studentIds);
             }, 0);
           } else {
@@ -126,7 +120,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
     // Lấy ID của sinh viên từ students nếu có
     if (this.isEditMode && this.data.room?.students && this.data.room.students.length > 0) {
       initialStudentIds = this.data.room.students.map(student => student.id);
-      console.log('initForm - initialStudentIds from students:', initialStudentIds);
     }
     
     this.roomForm = this.fb.group({
@@ -145,7 +138,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
     this.roomForm.get('studentIds')?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(selectedIds => {
-        console.log('studentIds changed:', selectedIds);
         if (selectedIds) {
           this.updateSelectedStudents(selectedIds);
           
@@ -173,7 +165,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private updateSelectedStudents(studentIds: string[]): void {
-    console.log('updateSelectedStudents called with:', studentIds);
     
     if (!studentIds || studentIds.length === 0) {
       this.selectedStudents = [];
@@ -184,8 +175,6 @@ export class RoomFormDialogComponent implements OnInit, OnDestroy, AfterViewInit
     this.selectedStudents = this.allAvailableStudents.filter(student => 
       studentIds.includes(student.id)
     );
-    
-    console.log('selectedStudents after update:', this.selectedStudents);
   }
 
   removeStudent(studentId: string): void {

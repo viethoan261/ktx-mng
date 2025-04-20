@@ -54,7 +54,6 @@ export class RequestsComponent implements OnInit {
     this.isLoading = true;
     this.requestService.getRequests().subscribe({
       next: (requests) => {
-        console.log('Received requests data:', requests);
         this.dataSource.data = requests;
         this.isLoading = false;
       },

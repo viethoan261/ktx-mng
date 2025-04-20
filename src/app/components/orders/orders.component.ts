@@ -167,9 +167,7 @@ export class OrdersComponent implements OnInit {
             return orderMonth === currentMonthValue && orderYear === currentYearValue;
           });
           
-          this.hasExistingOrders = ordersForPreviousMonth.length > 0;
-          console.log(`Orders for previous month: ${ordersForPreviousMonth.length}, hasExistingOrders: ${this.hasExistingOrders}`);
-          
+          this.hasExistingOrders = ordersForPreviousMonth.length > 0;          
           // Filter by current month initially
           this.filterOrdersByMonth();
           

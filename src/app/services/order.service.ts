@@ -16,7 +16,7 @@ export class OrderService {
    * Get all orders
    */
   getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}`);
+    return this.http.get<Order[]>(`${this.apiUrl} `);
   }
 
   /**

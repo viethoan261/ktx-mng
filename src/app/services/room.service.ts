@@ -31,4 +31,8 @@ export class RoomService {
   deleteRoom(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getAvailableRooms(): Observable<Room[]> {
+    return this.http.get<Room[]>(`${this.apiUrl}/available`);
+  }
 } 

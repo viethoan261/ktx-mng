@@ -72,14 +72,19 @@
     }
 
     .mat-column-actions {
-      max-width: 100px;
+      max-width: 200px;
       display: flex;
       justify-content: flex-end;
+      
+      button {
+        margin: 0 4px;
+        display: inline-block !important;
+      }
     }
   }
 
   .mat-column-actions {
-    width: 120px;
+    width: 200px;
     text-align: center;
   }
 

@@ -33,9 +33,7 @@ export class PaymentResultComponent implements OnInit {
 
   ngOnInit(): void {
     // Check if we have any query parameters
-    this.route.queryParams.subscribe(params => {
-      console.log('Payment callback params:', params);
-      
+    this.route.queryParams.subscribe(params => {      
       // If no params or empty params, we might be in a fallback situation
       if (!params || Object.keys(params).length === 0) {
         this.handleMissingParams();
@@ -214,7 +212,6 @@ export class PaymentResultComponent implements OnInit {
     
     this.orderService.updateOrderStatus(numericOrderId).subscribe({
       next: () => {
-        console.log('Order status updated successfully:', orderId);
         this.orderUpdated = true;
       },
       error: (error) => {
@@ -236,7 +233,6 @@ export class PaymentResultComponent implements OnInit {
     
     this.paymentService.updateTransaction(updateRequest).subscribe({
       next: () => {
-        console.log('Transaction status updated successfully');
         this.transactionUpdated = true;
       },
       error: (error) => {

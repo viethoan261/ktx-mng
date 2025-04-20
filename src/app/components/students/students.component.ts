@@ -8,6 +8,7 @@ import { StudentFormDialogComponent } from './student-form-dialog/student-form-d
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component';
+import { AssignRoomDialogComponent } from './assign-room-dialog/assign-room-dialog.component';
 
 @Component({
   selector: 'app-students',
@@ -118,6 +119,50 @@ export class StudentsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         this.deleteStudent(student.id);
+      }
+    });
+  }
+
+  onAssignRoom(student: Student): void {
+    // Tìm ID của phòng hiện tại nếu có
+    let currentRoomId = null;
+    
+    if (student.roomNumber) {
+      // Để đơn giản, chúng ta truyền roomNumber vào dialog dạng string
+      // Component assign-room sẽ xử lý lọc theo tên phòng thay vì ID
+      currentRoomId = student.roomNumber;
+    }
+    
+    console.log('Student:', student.fullname, 'Current room:', currentRoomId);
+    
+    const dialogRef = this.dialog.open(AssignRoomDialogComponent, {
+      width: '400px',
+      data: {
+        studentId: parseInt(student.id),
+        currentRoomNumber: currentRoomId // Truyền roomNumber thay vì roomId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(roomId => {
+      if (roomId) {
+        this.isLoading = true;
+        this.studentService.assignRoom(parseInt(student.id), roomId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.loadStudents();
+              this.snackBar.open('Gán phòng cho sinh viên thành công', 'Đóng', {
+                duration: 3000
+              });
+            },
+            error: (error) => {
+              console.error('Error assigning room:', error);
+              this.isLoading = false;
+              this.snackBar.open('Không thể gán phòng cho sinh viên', 'Đóng', {
+                duration: 3000
+              });
+            }
+          });
       }
     });
   }

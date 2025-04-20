@@ -15,11 +15,13 @@ import { EmptyStateModule } from '../common/empty-state/empty-state.module'; // 
 
 import { StudentsComponent } from './students.component';
 import { StudentFormDialogComponent } from './student-form-dialog/student-form-dialog.component'; // Import dialog mới
+import { AssignRoomDialogComponent } from './assign-room-dialog/assign-room-dialog.component'; // Import assign room dialog
 
 @NgModule({
   declarations: [
     StudentsComponent,
-    StudentFormDialogComponent // Thêm dialog vào declarations
+    StudentFormDialogComponent, // Thêm dialog vào declarations
+    AssignRoomDialogComponent // Thêm assign room dialog vào declarations
   ],
   imports: [
     CommonModule,

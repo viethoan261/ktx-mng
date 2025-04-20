@@ -31,4 +31,8 @@ export class StudentService {
   deleteStudent(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  assignRoom(studentId: number, roomId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/students/${studentId}/assign-room`, roomId);
+  }
 } 

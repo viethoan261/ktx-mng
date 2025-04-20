@@ -48,7 +48,6 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       try {
         const userInfo: UserInfo = JSON.parse(userInfoStr);
         this.userRole = userInfo.role;
-        console.log('User role:', this.userRole);
       } catch (e) {
         console.error('Error parsing user info:', e);
         this.userRole = '';

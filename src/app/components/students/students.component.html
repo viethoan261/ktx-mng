@@ -49,9 +49,17 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Hành động</mat-header-cell>
         <mat-cell *matCellDef="let student">
-          <button mat-icon-button color="primary" (click)="onEdit(student)">
+          <!-- Edit button -->
+          <button mat-icon-button color="primary" [style.display]="'inline-block'" (click)="onEdit(student)">
             <mat-icon>edit</mat-icon>
           </button>
+          
+          <!-- Assign Room button -->
+          <button mat-icon-button color="accent" (click)="onAssignRoom(student)">
+            <mat-icon>meeting_room</mat-icon>
+          </button>
+          
+          <!-- Delete button -->
           <button mat-icon-button color="warn" (click)="onDelete(student)">
             <mat-icon>delete</mat-icon>
           </button>

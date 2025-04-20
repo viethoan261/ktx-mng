@@ -44,9 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
       try {
         const userInfo: UserInfo = JSON.parse(userInfoStr);
         this.userRole = userInfo.role;
-        console.log('User role in header:', this.userRole);
       } catch (e) {
-        console.error('Error parsing user info:', e);
         this.userRole = '';
       }
     } else {
@@ -99,9 +97,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.notificationService.getNotifications()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (notifications) => {
-          console.log('Raw notifications from API:', notifications);
-          
+        next: (notifications) => {          
           // Lọc các thông báo có trạng thái active
           const activeNotifications = notifications.filter(notification => 
             notification.status === 'active'
